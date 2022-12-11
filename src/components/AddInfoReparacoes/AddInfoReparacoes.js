@@ -6,8 +6,6 @@ import api from "../../api/api";
 import styles from "../../p2-style.module.css";
 
 function AddInfoReparacoes({ id, setReparacao }) {
-  
-
   const [form, setForm] = useState({
     tribunal: "",
     unidade_judiciaria: "",
@@ -17,17 +15,16 @@ function AddInfoReparacoes({ id, setReparacao }) {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const cadastrarNovaInfo = await api.post(`/info/${id}`, form)    
+      const cadastrarNovaInfo = await api.post(`/info/${id}`, form);
 
       // console.log(form);
-     
+
       const response = await api.get(`/reparacao/${id}`);
       setReparacao(response.data);
 
@@ -36,7 +33,7 @@ function AddInfoReparacoes({ id, setReparacao }) {
         unidade_judiciaria: "",
         infos_relevantes: "",
         notificar_estado_cumprimento: "",
-      })
+      });
 
       toast.success("Novas informações cadastradas!", {
         position: "top-right",
@@ -55,7 +52,9 @@ function AddInfoReparacoes({ id, setReparacao }) {
 
   return (
     <Container>
-      <h2 className={styles.listForm} >Novas informações sobre Medida de Reparação</h2>
+      <h2 className={styles.listForm}>
+        Novas informações sobre Medida de Reparação
+      </h2>
       <Form onSubmit={handleSubmit}>
         <Row>
           <Col>
@@ -84,7 +83,6 @@ function AddInfoReparacoes({ id, setReparacao }) {
               />
             </Form.Group>
           </Col>
-          
         </Row>
         <Row>
           <Col>

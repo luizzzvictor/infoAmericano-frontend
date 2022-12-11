@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as moment from "moment/moment.js";
-import 'moment/locale/pt-br';
+import "moment/locale/pt-br";
 import React, { useEffect, useState } from "react";
 import {
   Accordion,
@@ -16,28 +16,24 @@ import {
 } from "react-bootstrap";
 import { Chrono } from "react-chrono";
 import { useNavigate } from "react-router-dom";
-import api from "../../api/api.js"
+import api from "../../api/api.js";
 
 function ReparacoesList({ apiURL }) {
   const [reparacoes, setReparacoes] = useState([]);
   const [casos, setCasos] = useState([]);
-  // const apiURLCasos = "https://ironrest.cyclic.app/casoscorteidh";
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     try {
       const fetchCasos = async () => {
-        // const response = await axios.get(apiURLCasos);
         const response = await api.get("/casosCorteIDH");
         setCasos(response.data);
       };
       fetchCasos();
 
       const fetchReparacoes = async () => {
-        // const response = await axios.get(apiURL);
-        const response = await api.get("/reparacao")
-        // console.log(response.data)
+        const response = await api.get("/reparacao");
         setReparacoes(response.data);
         setIsLoading(false);
       };
@@ -61,28 +57,30 @@ function ReparacoesList({ apiURL }) {
   const linhaDoTempo = (caso) => {
     const items = [
       {
-        title: `Petição à CIDH: ${moment(caso.cidh_peticao).format('l')}`,
+        title: `Petição à CIDH: ${moment(caso.cidh_peticao).format("l")}`,
         cardTitle: "Petição à CIDH",
         cardSubtitle:
           "A denúncia perante a CIDH deve ser apresentada contra um ou mais Estados membros da OEA que se considere terem violado os Direitos Humanos constantes da Declaração Americana, da Convenção Americana e de outros tratados interamericanos de Direitos Humanos",
       },
       {
-        title: `Admissibilidade: ${moment(caso.cidh_admissibilidade).format('l')}`,
+        title: `Admissibilidade: ${moment(caso.cidh_admissibilidade).format(
+          "l"
+        )}`,
         cardTitle: "Relatório de Admissibilidade na CIDH",
         cardSubtitle: "teste",
       },
       {
-        title: `Mérito: ${moment(caso.cidh_merito).format('l')}`,
+        title: `Mérito: ${moment(caso.cidh_merito).format("l")}`,
         cardTitle: "Relatório de Mérito na CIDH",
         cardSubtitle: "teste",
       },
       {
-        title: `Submissão à Corte: ${moment(caso.cidh_submissao).format('l')}`,
+        title: `Submissão à Corte: ${moment(caso.cidh_submissao).format("l")}`,
         cardTitle: "Submissão à Corte IDH",
         cardSubtitle: "teste",
       },
       {
-        title: `Sentença: ${moment(caso.corte_sentenca).format('l')}`,
+        title: `Sentença: ${moment(caso.corte_sentenca).format("l")}`,
         cardTitle: "Sentença da Corte IDH",
         cardSubtitle: "teste",
       },
@@ -152,11 +150,15 @@ function ReparacoesList({ apiURL }) {
                           <b>Representantes:</b> {caso.representantes}
                         </div>
                         <div>
-                          <b>Palavras-Chave:</b> {caso.palavras_chave.map((palavra) => {
-                            if (caso.palavras_chave.indexOf(palavra) === caso.palavras_chave.length-1 ) {
-                              return `${palavra}.`
+                          <b>Palavras-Chave:</b>{" "}
+                          {caso.palavras_chave.map((palavra) => {
+                            if (
+                              caso.palavras_chave.indexOf(palavra) ===
+                              caso.palavras_chave.length - 1
+                            ) {
+                              return `${palavra}.`;
                             } else {
-                              return `${palavra}, `
+                              return `${palavra}, `;
                             }
                           })}
                         </div>

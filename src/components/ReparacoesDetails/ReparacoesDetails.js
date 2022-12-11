@@ -7,8 +7,7 @@ import EditInfoReparacoes from "../EditInfoReparacoes/EditInfoReparacoes";
 import AddInfoReparacoes from "../AddInfoReparacoes/AddInfoReparacoes";
 import api from "../../api/api";
 
-
-function ReparacoesDetails({ apiURL, form, setForm }) {
+function ReparacoesDetails() {
   const [reparacao, setReparacao] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
@@ -20,7 +19,7 @@ function ReparacoesDetails({ apiURL, form, setForm }) {
       const fetchReparacao = async () => {
         // const response = await axios.get(`${apiURL}/${id}`);
         const response = await api.get(`/reparacao/${id}`);
-        
+
         setReparacao(response.data);
         setIsLoading(false);
       };
@@ -28,37 +27,32 @@ function ReparacoesDetails({ apiURL, form, setForm }) {
     } catch (error) {
       console.log(error);
     }
-  }, [apiURL, id]);
+  }, [id]);
 
   // -------- FUNÇÃO PARA DELETAR ITEM --------
-  // const deleteReparacao = async (index) => {
-  //   const clone = { ...reparacao };
+  const deleteReparacao = async (index) => {
+    const response = await api.get(`reparacao/${id}`);
+    const idDaInfo = response.data.infos_cumprimento[index]._id;
+    console.log(idDaInfo);
+    const deletarInfo = await api.delete(`/info/${idDaInfo}`);
 
-  //   delete clone._id;
+    const reRender = await api.get(`reparacao/${id}`);
+    setReparacao(reRender.data);
 
-  //   clone.infos_cumprimento.splice(index, 1);
-
-  //   console.log(clone);
-
-  //   await axios.put(`${apiURL}/${id}`, clone);
-
-  //   const response = await axios.get(`${apiURL}/${id}`);
-  //   setReparacao(response.data);
-
-  //   toast.success(
-  //     "Informação sobre cumprimento de medidas deletada com sucesso!",
-  //     {
-  //       position: "top-right",
-  //       autoClose: 2000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "colored",
-  //     }
-  //   );
-  // };
+    toast.success(
+      "Informação sobre cumprimento de medidas deletada com sucesso!",
+      {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      }
+    );
+  };
 
   // mapeia as arrays de infos dentro do caso
   let allInfos;
@@ -85,7 +79,7 @@ function ReparacoesDetails({ apiURL, form, setForm }) {
                   <Card.Text>
                     <strong> Unidade interna do Tribunal:</strong> <br />
                     {info.unidade_judiciaria}
-                  </Card.Text>                  
+                  </Card.Text>
                   <Card.Text>
                     <strong>
                       {" "}
@@ -109,8 +103,6 @@ function ReparacoesDetails({ apiURL, form, setForm }) {
                 <Col>
                   <EditInfoReparacoes
                     id={id}
-                    apiURL={apiURL}
-                    reparacao={reparacao}
                     setReparacao={setReparacao}
                     infoIndex={index}
                   />
@@ -123,7 +115,7 @@ function ReparacoesDetails({ apiURL, form, setForm }) {
                 <Col>
                   <Button
                     variant="danger"
-                    // onClick={() => deleteReparacao(index)}
+                    onClick={() => deleteReparacao(index)}
                   >
                     Excluir Informação sobre Cumprimento
                   </Button>
@@ -172,10 +164,7 @@ function ReparacoesDetails({ apiURL, form, setForm }) {
       <Container
         style={{ fontFamily: "Playfair Display", marginBottom: "2rem" }}
       >
-        <AddInfoReparacoes                
-          id={id}       
-          setReparacao={setReparacao}
-        />
+        <AddInfoReparacoes id={id} setReparacao={setReparacao} />
       </Container>
       <Container style={{ fontFamily: "Playfair Display" }}>
         {isLoading && <Spinner className="mt-4" animation="border" />}

@@ -15,15 +15,7 @@ import Sobre from "./pages/Sobre";
 
 
 function App() {
-  const apiURL = "https://ironrest.cyclic.app/reparacoes";
-
-  const [form, setForm] = useState({
-    tribunal: "",
-    unidade_judiciaria: "",
-    cargo_informante: "",
-    infos_relevantes: "",
-    notificar_status_cumprimento: "",
-  });
+  
 
   return (
     <div className="App">
@@ -35,12 +27,12 @@ function App() {
         <Route path="*" element={<ErrorPage />} />
         <Route
           path="/reparacoes"
-          element={<ReparacoesList apiURL={apiURL} />}
+          element={<ReparacoesList/>}
         />
         <Route
           path="/reparacoes/:id"
           element={
-            <ReparacoesDetails apiURL={apiURL} form={form} setForm={setForm} />
+            <ReparacoesDetails/>
           }
         />
         <Route path='/sobre' element={<Sobre/>} />

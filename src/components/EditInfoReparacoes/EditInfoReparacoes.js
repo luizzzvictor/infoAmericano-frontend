@@ -4,13 +4,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 import api from "../../api/api";
 
-function EditInfoReparacoes({
-  id,
-  apiURL,
-  reparacao,
-  setReparacao,
-  infoIndex,
-}) {
+function EditInfoReparacoes({ id, setReparacao, infoIndex }) {
   const [form, setForm] = useState({
     tribunal: "",
     unidade_judiciaria: "",
@@ -28,14 +22,12 @@ function EditInfoReparacoes({
   // -------- USE EFFECT PARA REQUISIÇÃO --------
   useEffect(() => {
     const fetchReparacao = async () => {
-      // const response = await axios.get(`${apiURL}/${id}`);
       const response = await api.get(`/reparacao/${id}`);
       // console.log(response.data);
       setForm(response.data.infos_cumprimento[infoIndex]);
-      
     };
     fetchReparacao();
-  }, [apiURL, id]);
+  }, [id]);
 
   // monitoramento dos inputs do formulário
   const handleChange = (e) => {
@@ -49,11 +41,11 @@ function EditInfoReparacoes({
 
     try {
       const response = await api.get(`reparacao/${id}`);
-      const idDaInfo = response.data.infos_cumprimento[infoIndex]._id   
-      console.log(idDaInfo)
-      console.log(form)
-      const editarInfo = await api.put(`info/editfromreparacoes`, form)      
-      
+      const idDaInfo = response.data.infos_cumprimento[infoIndex]._id;
+      console.log(idDaInfo);
+      console.log(form);
+      const editarInfo = await api.put(`info/editfromreparacoes`, form);
+
       const reRender = await api.get(`reparacao/${id}`);
       setReparacao(reRender.data);
 
@@ -124,7 +116,7 @@ function EditInfoReparacoes({
                 value={form.unidade_judiciaria}
                 onChange={handleChange}
               />
-            </Form.Group>     
+            </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>
                 Informações Relevantes sobre o Cumprimento
