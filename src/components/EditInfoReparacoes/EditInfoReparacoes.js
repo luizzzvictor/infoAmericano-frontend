@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
@@ -27,7 +26,7 @@ function EditInfoReparacoes({ id, setReparacao, infoIndex }) {
       setForm(response.data.infos_cumprimento[infoIndex]);
     };
     fetchReparacao();
-  }, [id]);
+  }, [id, infoIndex]);
 
   // monitoramento dos inputs do formulário
   const handleChange = (e) => {
@@ -44,7 +43,7 @@ function EditInfoReparacoes({ id, setReparacao, infoIndex }) {
       const idDaInfo = response.data.infos_cumprimento[infoIndex]._id;
       console.log(idDaInfo);
       console.log(form);
-      const editarInfo = await api.put(`info/editfromreparacoes`, form);
+      await api.put(`info/editfromreparacoes`, form);
 
       const reRender = await api.get(`reparacao/${id}`);
       setReparacao(reRender.data);

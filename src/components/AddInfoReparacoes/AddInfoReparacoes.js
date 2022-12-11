@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
@@ -21,7 +20,7 @@ function AddInfoReparacoes({ id, setReparacao }) {
     e.preventDefault();
 
     try {
-      const cadastrarNovaInfo = await api.post(`/info/${id}`, form);
+      await api.post(`/info/${id}`, form);
 
       // console.log(form);
 
