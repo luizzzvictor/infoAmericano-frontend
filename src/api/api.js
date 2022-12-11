@@ -7,7 +7,7 @@ const apiURLs = {
 
 const api = axios.create({baseURL: apiURLs[process.env.NODE_ENV]})
 
-//token
+//token - Necessário à implementação da AUTENTICAÇÃO
 // http://localhost:8080
 // api.interceptors.request.use((config) => {
 //     const loggedInUserJSON = localStorage.getItem("loggedInUser")
