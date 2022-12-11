@@ -1,4 +1,6 @@
 import axios from "axios";
+import * as moment from "moment/moment.js";
+import 'moment/locale/pt-br';
 import React, { useEffect, useState } from "react";
 import {
   Accordion,
@@ -14,6 +16,7 @@ import {
 } from "react-bootstrap";
 import { Chrono } from "react-chrono";
 import { useNavigate } from "react-router-dom";
+import api from "../../api/api.js"
 
 function ReparacoesList({ apiURL }) {
   const [reparacoes, setReparacoes] = useState([]);
@@ -25,13 +28,16 @@ function ReparacoesList({ apiURL }) {
   useEffect(() => {
     try {
       const fetchCasos = async () => {
-        const response = await axios.get(apiURLCasos);
+        // const response = await axios.get(apiURLCasos);
+        const response = await api.get("/casosCorteIDH");
         setCasos(response.data);
       };
       fetchCasos();
 
       const fetchReparacoes = async () => {
-        const response = await axios.get(apiURL);
+        // const response = await axios.get(apiURL);
+        const response = await api.get("/reparacao")
+        // console.log(response.data)
         setReparacoes(response.data);
         setIsLoading(false);
       };
@@ -43,40 +49,40 @@ function ReparacoesList({ apiURL }) {
 
   function contarEstadoCumprimento(arr, estado, casoDaMedida) {
     return arr.filter(
-      (v) => v.caso === casoDaMedida && v.estado_cumprimento === estado
+      (v) => v.nome_caso === casoDaMedida && v.estado_cumprimento === estado
     ).length;
   }
 
   //Código para renderizar apenas um Header para os items do Accordion, criei uma nova Array apenas com o valor da propriedade caso
   //fonte: https://stackoverflow.com/questions/15125920/how-to-get-distinct-values-from-an-array-of-objects-in-javascript
-  const apenasCasos = [...new Set(reparacoes.map((item) => item.caso))];
+  const apenasCasos = [...new Set(reparacoes.map((item) => item.nome_caso))];
 
   //renderizar linha do tempo
   const linhaDoTempo = (caso) => {
     const items = [
       {
-        title: `Petição à CIDH: ${caso.cidh_peticao}`,
+        title: `Petição à CIDH: ${moment(caso.cidh_peticao).format('l')}`,
         cardTitle: "Petição à CIDH",
         cardSubtitle:
           "A denúncia perante a CIDH deve ser apresentada contra um ou mais Estados membros da OEA que se considere terem violado os Direitos Humanos constantes da Declaração Americana, da Convenção Americana e de outros tratados interamericanos de Direitos Humanos",
       },
       {
-        title: `Admissibilidade: ${caso.cidh_admissibilidade}`,
+        title: `Admissibilidade: ${moment(caso.cidh_admissibilidade).format('l')}`,
         cardTitle: "Relatório de Admissibilidade na CIDH",
         cardSubtitle: "teste",
       },
       {
-        title: `Mérito: ${caso.cidh_merito}`,
+        title: `Mérito: ${moment(caso.cidh_merito).format('l')}`,
         cardTitle: "Relatório de Mérito na CIDH",
         cardSubtitle: "teste",
       },
       {
-        title: `Submissão à Corte: ${caso.cidh_submissao}`,
+        title: `Submissão à Corte: ${moment(caso.cidh_submissao).format('l')}`,
         cardTitle: "Submissão à Corte IDH",
         cardSubtitle: "teste",
       },
       {
-        title: `Sentença: ${caso.corte_sentenca}`,
+        title: `Sentença: ${moment(caso.corte_sentenca).format('l')}`,
         cardTitle: "Sentença da Corte IDH",
         cardSubtitle: "teste",
       },
@@ -314,7 +320,7 @@ function ReparacoesList({ apiURL }) {
           </ProgressBar>
           <ListGroup as="ol" numbered variant="flush">
             {reparacoes.map((reparacao, index) => {
-              if (reparacao.caso === casoDaMedida) {
+              if (reparacao.nome_caso === casoDaMedida) {
                 return (
                   <ListGroup.Item
                     action
