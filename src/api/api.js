@@ -1,14 +1,14 @@
 import axios from 'axios'
 
 const apiURLs = {
-    development: " https://infoamericano.fly.dev/",
-    production: "link do server deployado"
+    development: "http://localhost:8080",
+    production: "https://infoamericano.fly.dev/"
 }
 
 const api = axios.create({baseURL: apiURLs[process.env.NODE_ENV]})
 
 //token
-
+// http://localhost:8080
 // api.interceptors.request.use((config) => {
 //     const loggedInUserJSON = localStorage.getItem("loggedInUser")
 

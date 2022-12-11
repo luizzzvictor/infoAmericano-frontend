@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
+import api from "../../api/api";
 
 function EditInfoReparacoes({
   id,
@@ -13,9 +14,8 @@ function EditInfoReparacoes({
   const [form, setForm] = useState({
     tribunal: "",
     unidade_judiciaria: "",
-    cargo_informante: "",
     infos_relevantes: "",
-    notificar_status_cumprimento: "",
+    notificar_estado_cumprimento: "",
   });
 
   // uso do modal
@@ -28,9 +28,11 @@ function EditInfoReparacoes({
   // -------- USE EFFECT PARA REQUISIÇÃO --------
   useEffect(() => {
     const fetchReparacao = async () => {
-      const response = await axios.get(`${apiURL}/${id}`);
-      console.log(response.data);
+      // const response = await axios.get(`${apiURL}/${id}`);
+      const response = await api.get(`/reparacao/${id}`);
+      // console.log(response.data);
       setForm(response.data.infos_cumprimento[infoIndex]);
+      
     };
     fetchReparacao();
   }, [apiURL, id]);
@@ -38,7 +40,7 @@ function EditInfoReparacoes({
   // monitoramento dos inputs do formulário
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    console.log(form);
+    // console.log(form);
   };
 
   // envio do formulário
@@ -46,19 +48,14 @@ function EditInfoReparacoes({
     e.preventDefault();
 
     try {
-      const clone = { ...reparacao };
-
-      delete clone._id;
-
-      clone.infos_cumprimento.splice(infoIndex, 1, form);
-      // clone.infos_cumprimento.push(form);
-
-      console.log(clone);
-
-      await axios.put(`${apiURL}/${id}`, clone);
-
-      const response = await axios.get(`${apiURL}/${id}`);
-      setReparacao(response.data);
+      const response = await api.get(`reparacao/${id}`);
+      const idDaInfo = response.data.infos_cumprimento[infoIndex]._id   
+      console.log(idDaInfo)
+      console.log(form)
+      const editarInfo = await api.put(`info/editfromreparacoes`, form)      
+      
+      const reRender = await api.get(`reparacao/${id}`);
+      setReparacao(reRender.data);
 
       setShow(false);
 
@@ -127,17 +124,7 @@ function EditInfoReparacoes({
                 value={form.unidade_judiciaria}
                 onChange={handleChange}
               />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Cargo do responsável pelas informações</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Insira o Cargo do Responsável"
-                name="cargo_informante"
-                value={form.cargo_informante}
-                onChange={handleChange}
-              />
-            </Form.Group>
+            </Form.Group>     
             <Form.Group className="mb-3">
               <Form.Label>
                 Informações Relevantes sobre o Cumprimento
@@ -155,7 +142,7 @@ function EditInfoReparacoes({
                 Notificar Alteração/Manutenção do Status de Cumprimento
               </Form.Label>
               <Form.Select
-                name="notificar_status_cumprimento"
+                name="notificar_estado_cumprimento"
                 onChange={handleChange}
               >
                 <option value="0">Selecione uma opção</option>
