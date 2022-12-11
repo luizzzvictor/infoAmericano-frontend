@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
 import EditInfoReparacoes from "../EditInfoReparacoes/EditInfoReparacoes";
 import AddInfoReparacoes from "../AddInfoReparacoes/AddInfoReparacoes";
+import api from "../../api/api";
+
 
 function ReparacoesDetails({ apiURL, form, setForm }) {
   const [reparacao, setReparacao] = useState({});
@@ -16,8 +18,9 @@ function ReparacoesDetails({ apiURL, form, setForm }) {
   useEffect(() => {
     try {
       const fetchReparacao = async () => {
-        const response = await axios.get(`${apiURL}/${id}`);
-
+        // const response = await axios.get(`${apiURL}/${id}`);
+        const response = await api.get(`/reparacao/${id}`);
+        
         setReparacao(response.data);
         setIsLoading(false);
       };
@@ -28,34 +31,34 @@ function ReparacoesDetails({ apiURL, form, setForm }) {
   }, [apiURL, id]);
 
   // -------- FUNÇÃO PARA DELETAR ITEM --------
-  const deleteReparacao = async (index) => {
-    const clone = { ...reparacao };
+  // const deleteReparacao = async (index) => {
+  //   const clone = { ...reparacao };
 
-    delete clone._id;
+  //   delete clone._id;
 
-    clone.infos_cumprimento.splice(index, 1);
+  //   clone.infos_cumprimento.splice(index, 1);
 
-    console.log(clone);
+  //   console.log(clone);
 
-    await axios.put(`${apiURL}/${id}`, clone);
+  //   await axios.put(`${apiURL}/${id}`, clone);
 
-    const response = await axios.get(`${apiURL}/${id}`);
-    setReparacao(response.data);
+  //   const response = await axios.get(`${apiURL}/${id}`);
+  //   setReparacao(response.data);
 
-    toast.success(
-      "Informação sobre cumprimento de medidas deletada com sucesso!",
-      {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      }
-    );
-  };
+  //   toast.success(
+  //     "Informação sobre cumprimento de medidas deletada com sucesso!",
+  //     {
+  //       position: "top-right",
+  //       autoClose: 2000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "colored",
+  //     }
+  //   );
+  // };
 
   // mapeia as arrays de infos dentro do caso
   let allInfos;
@@ -82,11 +85,7 @@ function ReparacoesDetails({ apiURL, form, setForm }) {
                   <Card.Text>
                     <strong> Unidade interna do Tribunal:</strong> <br />
                     {info.unidade_judiciaria}
-                  </Card.Text>
-                  <Card.Text>
-                    <strong> Cargo do Usuário:</strong> <br />
-                    {info.cargo_informante}
-                  </Card.Text>
+                  </Card.Text>                  
                   <Card.Text>
                     <strong>
                       {" "}
@@ -102,7 +101,7 @@ function ReparacoesDetails({ apiURL, form, setForm }) {
                       Notificar alteração do status de cumprimento:
                     </strong>{" "}
                     <br />
-                    {info.notificar_status_cumprimento}
+                    {info.notificar_estado_cumprimento}
                   </Card.Text>
                 </Col>
               </Row>
@@ -124,7 +123,7 @@ function ReparacoesDetails({ apiURL, form, setForm }) {
                 <Col>
                   <Button
                     variant="danger"
-                    onClick={() => deleteReparacao(index)}
+                    // onClick={() => deleteReparacao(index)}
                   >
                     Excluir Informação sobre Cumprimento
                   </Button>
@@ -148,7 +147,7 @@ function ReparacoesDetails({ apiURL, form, setForm }) {
           <Col>
             <Card.Header>
               <Card.Title className="m-4">
-                <h1> {reparacao.caso}</h1>
+                <h1> {reparacao.nome_caso}</h1>
               </Card.Title>
             </Card.Header>
           </Col>
@@ -173,12 +172,8 @@ function ReparacoesDetails({ apiURL, form, setForm }) {
       <Container
         style={{ fontFamily: "Playfair Display", marginBottom: "2rem" }}
       >
-        <AddInfoReparacoes
-          apiURL={apiURL}
-          form={form}
-          setForm={setForm}
-          id={id}
-          reparacao={reparacao}
+        <AddInfoReparacoes                
+          id={id}       
           setReparacao={setReparacao}
         />
       </Container>

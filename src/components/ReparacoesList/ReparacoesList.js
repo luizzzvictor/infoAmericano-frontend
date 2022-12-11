@@ -21,7 +21,7 @@ import api from "../../api/api.js"
 function ReparacoesList({ apiURL }) {
   const [reparacoes, setReparacoes] = useState([]);
   const [casos, setCasos] = useState([]);
-  const apiURLCasos = "https://ironrest.cyclic.app/casoscorteidh";
+  // const apiURLCasos = "https://ironrest.cyclic.app/casoscorteidh";
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -45,7 +45,7 @@ function ReparacoesList({ apiURL }) {
     } catch (error) {
       console.log(error);
     }
-  }, [apiURL, apiURLCasos]);
+  }, []);
 
   function contarEstadoCumprimento(arr, estado, casoDaMedida) {
     return arr.filter(

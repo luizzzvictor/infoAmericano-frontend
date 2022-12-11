@@ -2,17 +2,17 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
+import api from "../../api/api";
 import styles from "../../p2-style.module.css";
 
-function AddInfoReparacoes({ apiURL, id, reparacao, setReparacao }) {
+function AddInfoReparacoes({ id, setReparacao }) {
   
 
   const [form, setForm] = useState({
     tribunal: "",
     unidade_judiciaria: "",
-    cargo_informante: "",
     infos_relevantes: "",
-    notificar_status_cumprimento: "",
+    notificar_estado_cumprimento: "",
   });
 
   const handleChange = (e) => {
@@ -24,26 +24,19 @@ function AddInfoReparacoes({ apiURL, id, reparacao, setReparacao }) {
     e.preventDefault();
 
     try {
-      const clone = { ...reparacao };
-      delete clone._id;
+      const cadastrarNovaInfo = await api.post(`/info/${id}`, form)    
 
-      clone.infos_cumprimento.push(form);
-
-      console.log(clone);
-
-      await axios.put(`${apiURL}/${id}`, clone);
-
-      const response = await axios.get(`${apiURL}/${id}`);
+      // console.log(form);
+     
+      const response = await api.get(`/reparacao/${id}`);
       setReparacao(response.data);
 
       setForm({
         tribunal: "",
         unidade_judiciaria: "",
-        cargo_informante: "",
         infos_relevantes: "",
-        notificar_status_cumprimento: "",
+        notificar_estado_cumprimento: "",
       })
-    
 
       toast.success("Novas informações cadastradas!", {
         position: "top-right",
@@ -91,18 +84,7 @@ function AddInfoReparacoes({ apiURL, id, reparacao, setReparacao }) {
               />
             </Form.Group>
           </Col>
-          <Col>
-            <Form.Group className="mb-3">
-              <Form.Label>Cargo do responsável pelas informações</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Insira o Cargo"
-                name="cargo_informante"
-                value={form.cargo_informante}
-                onChange={handleChange}
-              />
-            </Form.Group>
-          </Col>
+          
         </Row>
         <Row>
           <Col>
@@ -123,7 +105,7 @@ function AddInfoReparacoes({ apiURL, id, reparacao, setReparacao }) {
                 Notificar Alteração/Manutenção do Status de Cumprimento
               </Form.Label>
               <Form.Select
-                name="notificar_status_cumprimento"
+                name="notificar_estado_cumprimento"
                 onChange={handleChange}
               >
                 <option value="0">Selecione uma opção</option>
