@@ -1,4 +1,3 @@
-import axios from "axios";
 import * as moment from "moment/moment.js";
 import "moment/locale/pt-br";
 import React, { useEffect, useState } from "react";

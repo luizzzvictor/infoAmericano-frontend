@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
@@ -33,8 +32,8 @@ function ReparacoesDetails() {
   const deleteReparacao = async (index) => {
     const response = await api.get(`reparacao/${id}`);
     const idDaInfo = response.data.infos_cumprimento[index]._id;
-    console.log(idDaInfo);
-    const deletarInfo = await api.delete(`/info/${idDaInfo}`);
+    // console.log(idDaInfo);
+    await api.delete(`/info/${idDaInfo}`);
 
     const reRender = await api.get(`reparacao/${id}`);
     setReparacao(reRender.data);

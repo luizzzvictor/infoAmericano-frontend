@@ -8,7 +8,6 @@ import ReparacoesDetails from "./components/ReparacoesDetails/ReparacoesDetails"
 import ErrorPage from "./pages/ErrorPage";
 import HomePage from "./pages/HomePage";
 import NavigationBar from "./components/NavigationBar/NavigationBar";
-import { useState } from "react";
 import { ToastContainer } from "react-toastify";
 import Apresentacao from "./pages/Apresentacao";
 import Sobre from "./pages/Sobre";
