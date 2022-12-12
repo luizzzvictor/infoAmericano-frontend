@@ -1,7 +1,7 @@
 import React from "react";
 import { Alert, Container } from "react-bootstrap";
 
-function ErrorPage(props) {
+function ErrorPage() {
   return (
     <Container className="my-5">
       <Alert
