@@ -55,9 +55,9 @@ function Municipios() {
   const preparaFormNova = () => {
     handleShow();
     setForm({ 
-        name: "", 
-        codigo: "", 
-        uf: "", 
+        NOM_ORGAO: "", 
+        SEQ_ORGAO: "", 
+        UF: "", 
     });
   }
 
@@ -73,9 +73,9 @@ function Municipios() {
           const response = await api.get(`/municipio/getid/${id}`)
           setForm({
             _id:    response.data._id,
-            name:   response.data.name, 
-            codigo: response.data.codigo, 
-            uf:     response.data.uf, 
+            NOM_ORGAO:   response.data.NOM_ORGAO, 
+            SEQ_ORGAO: response.data.SEQ_ORGAO, 
+            UF:     response.data.UF, 
           });
           setStatusAlt(true)
           handleShow()
@@ -143,14 +143,14 @@ function Municipios() {
   // somente os registros que forem compatíveis com a string de BUSCA
   // as duas últimas colunas são Botões com Links para ALTERAR e DELETAR
   const renderMunicipios = mMunicipios
-  .filter((Municipio) => Municipio.name.toLowerCase().includes(search.toLowerCase()))
+  .filter((Municipio) => Municipio.NOM_ORGAO.toLowerCase().includes(search.toLowerCase()))
   .map((Municipio) => {
       return (
           <tr key={Municipio._id}>
               
-              <td className="p-1 text-start">{Municipio.name}</td>
-              <td className="p-1 text-center">{Municipio.codigo}</td>
-              <td className="p-1">{Municipio.uf}</td>
+              <td className="p-1 text-start">{Municipio.NOM_ORGAO}</td>
+              <td className="p-1 text-center">{Municipio.SEQ_ORGAO}</td>
+              <td className="p-1">{Municipio.UF}</td>
 
               <td className="p-1 text-start">
                 <Button className="p-0" variant="" onClick={ (event) => { alteraMunicipio(Municipio._id) } }>
@@ -222,7 +222,7 @@ function Municipios() {
                             <Form.Label>Nome: </Form.Label>
                             <Form.Control type="text"
                                 placeholder="Insira o nome completo do Município"
-                                name="name" value={form.name} onChange={handleChange}
+                                name="NOM_ORGAO" value={form.NOM_ORGAO} onChange={handleChange}
                                 onBlur={handleBlur}
                             />
                         </Form.Group>
@@ -230,7 +230,7 @@ function Municipios() {
                             <Form.Label>Código: </Form.Label>
                             <Form.Control type="text"
                                 placeholder="Insira o Código do Municipio"
-                                name="codigo" value={form.codigo} onChange={handleChange}
+                                name="SEQ_ORGAO" value={form.SEQ_ORGAO} onChange={handleChange}
                                 onBlur={handleBlur}
                             />
                         </Form.Group>
@@ -238,7 +238,7 @@ function Municipios() {
                             <Form.Label>UF: </Form.Label>
                             <Form.Control type="text"
                                 placeholder="Insira a UF do Municipio"
-                                name="uf" value={form.uf} onChange={handleChange}
+                                name="UF" value={form.UF} onChange={handleChange}
                                 onBlur={handleBlur}
                             />
                         </Form.Group>
@@ -261,19 +261,19 @@ function Municipios() {
                 <Table className="mt-4" bordered hover>
                     <thead>
                         <tr>
-                            <th onClick={ () => classifica('name','text') } className="text-center">
+                            <th onClick={ () => classifica('NOM_ORGAO','text') } className="text-center">
                               <div className="d-flex">
                                 <div className='col-11'>Nome</div>
                                 <div className='col-1'> <FontAwesomeIcon style={{color: "blue"}} icon={faUpDown}/> </div>
                               </div>
                             </th>
-                            <th onClick={ () => classifica('codigo','number') } className="text-center">
+                            <th onClick={ () => classifica('SEQ_ORGAO','number') } className="text-center">
                               <div className="d-flex">
                                 <div className='col-11'>Codigo</div>
                                 <div className='col-1'> <FontAwesomeIcon style={{color: "blue"}} icon={faUpDown}/> </div>
                               </div>
                             </th>
-                            <th onClick={ () => classifica('uf','text') } className=" text-center">
+                            <th onClick={ () => classifica('UF','text') } className=" text-center">
                               <div className="d-flex">
                                 <div className='col-11'>UF</div>
                                 <div className='col-1'> <FontAwesomeIcon style={{color: "blue"}} icon={faUpDown}/> </div>

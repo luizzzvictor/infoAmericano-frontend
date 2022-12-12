@@ -55,9 +55,9 @@ function Orgaos() {
   const preparaFormNova = () => {
     handleShow();
     setForm({ 
-        name: "", 
-        codigo: "", 
-        municipio: "", 
+        NOM_ORGAO: "", 
+        SEQ_ORGAO: "", 
+        SEQ_MUNICIPIO: "", 
     });
   }
 
@@ -73,9 +73,9 @@ function Orgaos() {
           const response = await api.get(`/orgao/getid/${id}`)
           setForm({
             _id:       response.data._id,
-            name:      response.data.name, 
-            codigo:    response.data.codigo, 
-            municipio: response.data.municipio, 
+            NOM_ORGAO:      response.data.NOM_ORGAO, 
+            SEQ_ORGAO:    response.data.SEQ_ORGAO, 
+            SEQ_MUNICIPIO: response.data.SEQ_MUNICIPIO, 
           });
           setStatusAlt(true)
           handleShow()
@@ -143,14 +143,14 @@ function Orgaos() {
   // somente os registros que forem compatíveis com a string de BUSCA
   // as duas últimas colunas são Botões com Links para ALTERAR e DELETAR
   const renderOrgaos = mOrgaos
-  .filter((Orgao) => Orgao.name.toLowerCase().includes(search.toLowerCase()))
+  .filter((Orgao) => Orgao.NOM_ORGAO.toLowerCase().includes(search.toLowerCase()))
   .map((Orgao) => {
       return (
           <tr key={Orgao._id}>
               
-              <td className="p-1 text-start">{Orgao.name}</td>
-              <td className="p-1 text-center">{Orgao.codigo}</td>
-              <td className="p-1">{Orgao.municipio}</td>
+              <td className="p-1 text-start">{Orgao.NOM_ORGAO}</td>
+              <td className="p-1 text-center">{Orgao.SEQ_ORGAO}</td>
+              <td className="p-1">{Orgao.SEQ_MUNICIPIO}</td>
 
               <td className="p-1 text-start">
                 <Button className="p-0" variant="" onClick={ (event) => { alteraOrgao(Orgao._id) } }>
@@ -222,7 +222,7 @@ function Orgaos() {
                             <Form.Label>Nome: </Form.Label>
                             <Form.Control type="text"
                                 placeholder="Insira o nome do Órgão"
-                                name="name" value={form.name} onChange={handleChange}
+                                name="NOM_ORGAO" value={form.NOM_ORGAO} onChange={handleChange}
                                 onBlur={handleBlur}
                             />
                         </Form.Group>
@@ -230,7 +230,7 @@ function Orgaos() {
                             <Form.Label>Código: </Form.Label>
                             <Form.Control type="text"
                                 placeholder="Insira o Código do Órgão"
-                                name="codigo" value={form.codigo} onChange={handleChange}
+                                name="SEQ_ORGAO" value={form.SEQ_ORGAO} onChange={handleChange}
                                 onBlur={handleBlur}
                             />
                         </Form.Group>
@@ -238,7 +238,7 @@ function Orgaos() {
                             <Form.Label>Código do Município: </Form.Label>
                             <Form.Control type="text"
                                 placeholder="Insira o Código do município do Órgão"
-                                name="municipio" value={form.municipio} onChange={handleChange}
+                                name="SEQ_MUNICIPIO" value={form.SEQ_MUNICIPIO} onChange={handleChange}
                                 onBlur={handleBlur}
                             />
                         </Form.Group>
@@ -261,19 +261,19 @@ function Orgaos() {
                 <Table className="mt-4" bordered hover>
                     <thead>
                         <tr>
-                            <th onClick={ () => classifica('name','text') } className="text-center">
+                            <th onClick={ () => classifica('NOM_ORGAO','text') } className="text-center">
                               <div className="d-flex">
                                 <div className='col-11'>Nome</div>
                                 <div className='col-1'> <FontAwesomeIcon style={{color: "blue"}} icon={faUpDown}/> </div>
                               </div>
                             </th>
-                            <th onClick={ () => classifica('codigo','number') } className="text-center">
+                            <th onClick={ () => classifica('SEQ_ORGAO','number') } className="text-center">
                               <div className="d-flex">
                                 <div className='col-11'>Codigo</div>
                                 <div className='col-1'> <FontAwesomeIcon style={{color: "blue"}} icon={faUpDown}/> </div>
                               </div>
                             </th>
-                            <th onClick={ () => classifica('municipio','text') } className=" text-center">
+                            <th onClick={ () => classifica('SEQ_MUNICIPIO','number') } className=" text-center">
                               <div className="d-flex">
                                 <div className='col-11'>Código Município</div>
                                 <div className='col-1'> <FontAwesomeIcon style={{color: "blue"}} icon={faUpDown}/> </div>

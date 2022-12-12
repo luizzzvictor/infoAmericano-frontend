@@ -55,7 +55,7 @@ function Assuntos() {
   const preparaFormNova = () => {
     handleShow();
     setForm({ 
-        name: "", 
+        palavra_chave: "", 
         codigo: "", 
     });
   }
@@ -72,7 +72,7 @@ function Assuntos() {
           const response = await api.get(`/assunto/getid/${id}`)
           setForm({
             _id:    response.data._id,
-            name:   response.data.name, 
+            palavra_chave:   response.data.palavra_chave, 
             codigo: response.data.codigo, 
           });
           setStatusAlt(true)
@@ -141,12 +141,12 @@ function Assuntos() {
   // somente os registros que forem compatíveis com a string de BUSCA
   // as duas últimas colunas são Botões com Links para ALTERAR e DELETAR
   const renderAssuntos = mAssuntos
-  .filter((Assunto) => Assunto.name.toLowerCase().includes(search.toLowerCase()))
+  .filter((Assunto) => Assunto.palavra_chave.toLowerCase().includes(search.toLowerCase()))
   .map((Assunto) => {
       return (
           <tr key={Assunto._id}>
               
-              <td className="p-1 text-start">{Assunto.name}</td>
+              <td className="p-1 text-start">{Assunto.palavra_chave}</td>
               <td className="p-1 text-center">{Assunto.codigo}</td>
 
               <td className="p-1 text-start">
@@ -219,7 +219,7 @@ function Assuntos() {
                             <Form.Label>Nome: </Form.Label>
                             <Form.Control type="text"
                                 placeholder="Insira o nome completo do Município"
-                                name="name" value={form.name} onChange={handleChange}
+                                name="palavra_chave" value={form.palavra_chave} onChange={handleChange}
                                 onBlur={handleBlur}
                             />
                         </Form.Group>
@@ -250,7 +250,7 @@ function Assuntos() {
                 <Table className="mt-4" bordered hover>
                     <thead>
                         <tr>
-                            <th onClick={ () => classifica('name','text') } className="text-center">
+                            <th onClick={ () => classifica('palavra_chave','text') } className="text-center">
                               <div className="d-flex">
                                 <div className='col-11'>Nome</div>
                                 <div className='col-1'> <FontAwesomeIcon style={{color: "blue"}} icon={faUpDown}/> </div>
