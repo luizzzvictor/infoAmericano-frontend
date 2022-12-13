@@ -3,7 +3,13 @@ import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../../p2-style.module.css";
 
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/authContext";
+
 function NavigationBar(props) {
+
+  const { loggedInUser } = useContext(AuthContext);
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -12,6 +18,9 @@ function NavigationBar(props) {
   }
 
   return (
+
+    <>
+    { !loggedInUser && (
     <Navbar className={styles.navbar} collapseOnSelect expand="lg">
       <Container>
         <Navbar.Brand
@@ -63,10 +72,22 @@ function NavigationBar(props) {
             >
               Sobre
             </Nav.Link>
+            <Nav.Link className={styles.navbarBtn}
+              onClick={() => { navigate(`/sign-up`); }}
+            >
+              Cadastre-se
+            </Nav.Link>
+            <Nav.Link className={styles.navbarBtn}
+              onClick={() => { navigate(`/login`); }}
+            >
+              Login
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
+    )}</>
+
   );
 }
 

@@ -31,8 +31,8 @@ function LoginPage() {
             navigate("/admin")
         } */
 
-      //navigate("/profile");
-      navigate("/");
+      // navigate("/profile");
+      // navigate("/");
 
     } catch (error) {
       console.log(error);
@@ -45,7 +45,7 @@ function LoginPage() {
 
   return (
     <Container
-      style={{ height: "100vh" }}
+      style={{ height: "50vh" }}
       className="d-flex flex-column align-items-center justify-content-center"
     >
       <Form onSubmit={handleSubmit} className="w-50">

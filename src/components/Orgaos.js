@@ -56,8 +56,8 @@ function Orgaos() {
     handleShow();
     setForm({ 
         NOM_ORGAO: "", 
-        SEQ_ORGAO: "", 
-        SEQ_MUNICIPIO: "", 
+        SEQ_ORGAO: 0, 
+        SEQ_MUNICIPIO: 0, 
     });
   }
 
@@ -128,6 +128,7 @@ function Orgaos() {
           console.log(clone);
           await api.put(`/orgao/replaceid/${form._id}`, clone)
         } else {
+          console.log(form)
           await api.post("/orgao/insert", form)
         }        
         lerOrgaos()
@@ -228,7 +229,7 @@ function Orgaos() {
                         </Form.Group>
                         <Form.Group className="mb-3 lh-1 fw-bold">
                             <Form.Label>Código: </Form.Label>
-                            <Form.Control type="text"
+                            <Form.Control type="number"
                                 placeholder="Insira o Código do Órgão"
                                 name="SEQ_ORGAO" value={form.SEQ_ORGAO} onChange={handleChange}
                                 onBlur={handleBlur}
@@ -236,7 +237,7 @@ function Orgaos() {
                         </Form.Group>
                         <Form.Group className="mb-3 lh-1 fw-bold">
                             <Form.Label>Código do Município: </Form.Label>
-                            <Form.Control type="text"
+                            <Form.Control type="number"
                                 placeholder="Insira o Código do município do Órgão"
                                 name="SEQ_MUNICIPIO" value={form.SEQ_MUNICIPIO} onChange={handleChange}
                                 onBlur={handleBlur}

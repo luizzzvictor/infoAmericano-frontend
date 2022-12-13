@@ -1,8 +1,21 @@
 import axios from 'axios'
 
+// original
+// const apiURLs = {
+//    development: "http://localhost:8080",
+//    production:  "https://infoamericano.fly.dev/"
+// }
+
+// roda front-end (local) acessando base de dados remota (criada pelo Luiz)
+// const apiURLs = {
+//    development: "https://infoamericano.fly.dev/",
+//    production:  "https://infoamericano.fly.dev/"
+// }
+
+// roda front-end (local) acessando base de dados definida no .env
 const apiURLs = {
-    development: "http://localhost:8080",
-    production:  "https://infoamericano.fly.dev/"
+   development: "http://localhost:8080",
+   production:  "http://localhost:8080"
 }
 
 const api = axios.create({baseURL: apiURLs[process.env.NODE_ENV]})
