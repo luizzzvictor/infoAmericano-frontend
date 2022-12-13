@@ -6,7 +6,13 @@ import EditInfoReparacoes from "../EditInfoReparacoes/EditInfoReparacoes";
 import AddInfoReparacoes from "../AddInfoReparacoes/AddInfoReparacoes";
 import api from "../../api/api";
 
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/authContext"
+
 function ReparacoesDetails() {
+
+  const { loggedInUser } = useContext(AuthContext);
+
   const [reparacao, setReparacao] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
@@ -163,7 +169,7 @@ function ReparacoesDetails() {
       <Container
         style={{ fontFamily: "Playfair Display", marginBottom: "2rem" }}
       >
-        <AddInfoReparacoes id={id} setReparacao={setReparacao} />
+        {loggedInUser &&  <AddInfoReparacoes id={id} setReparacao={setReparacao} />}
       </Container>
       <Container style={{ fontFamily: "Playfair Display" }}>
         {isLoading && <Spinner className="mt-4" animation="border" />}
