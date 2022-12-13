@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api/api.js";
@@ -22,6 +22,34 @@ function SignUpPage() {
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
+//////////////////////RENDER ORGAOS NO FORM/////////////////////////////////
+  const [orgaos, setOrgaos] = useState({});
+
+  useEffect(() => {
+    try {
+      const fetchReparacao = async () => {
+        // const response = await axios.get(`${apiURL}/${id}`);
+        const response = await api.get(`/orgao/getall-nologin`);
+
+        setOrgaos(response.data);
+        // console.log(Array.from(orgaos))
+      };
+      fetchReparacao();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  // console.log(orgaos)
+
+  const renderizarOrgaos = Array.from(orgaos).map((o) => {
+      return ( <option value={o._id}>
+      {o.NOM_ORGAO}
+    </option>)
+    })
+
+
+  /////////////////////////////////////////////////////////
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -114,7 +142,7 @@ function SignUpPage() {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        {/* <Form.Group className="mb-3">
           <Form.Label>Código Órgão (CNJ): </Form.Label>
           <Form.Control
             type="text"
@@ -123,7 +151,21 @@ function SignUpPage() {
             value={form.orgao}
             onChange={handleChange}
           />
-        </Form.Group>
+        </Form.Group> */}
+
+        <Form.Group>
+              <Form.Label>
+                Tribunal
+              </Form.Label>
+              <Form.Select
+                name="orgao"
+                value={form.orgao}
+                onChange={handleChange}
+              >
+               <option value="0">Selecione uma opção</option>
+               {renderizarOrgaos}
+              </Form.Select>
+            </Form.Group>
 
         <Button className="my-3" variant="dark" type="submit">
           Cadastrar usuário
