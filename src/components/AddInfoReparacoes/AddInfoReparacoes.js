@@ -7,7 +7,7 @@ import styles from "../../p2-style.module.css";
 function AddInfoReparacoes({ id, setReparacao }) {
   const [form, setForm] = useState({
     // tribunal: "",
-    unidade_judiciaria: "",
+    // unidade_judiciaria: "",
     infos_relevantes: "",
     notificar_estado_cumprimento: "",
   });
@@ -29,10 +29,12 @@ function AddInfoReparacoes({ id, setReparacao }) {
 
       setForm({
         // tribunal: "",
-        unidade_judiciaria: "",
+        // unidade_judiciaria: "",
         infos_relevantes: "",
         notificar_estado_cumprimento: "",
       });
+
+
 
       toast.success("Novas informações cadastradas!", {
         position: "top-right",
@@ -49,6 +51,13 @@ function AddInfoReparacoes({ id, setReparacao }) {
     }
   };
 
+  function resetarSelect(e) {
+
+     [e.target.value]= "0" ;
+
+  }
+  
+
   return (
     <Container>
       <h2 className={styles.listForm}>
@@ -56,54 +65,33 @@ function AddInfoReparacoes({ id, setReparacao }) {
       </h2>
       <Form onSubmit={handleSubmit}>
         <Row>
-          <Col>
-            {/* <Form.Group className="mb-3">
-              <Form.Label>Tribunal</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Insira o nome do Tribunal de origem da informação"
-                name="tribunal"
-                value={form.tribunal}
-                onChange={handleChange}
-              />
-            </Form.Group> */}
-          </Col>
-        </Row>
-        <Row>
+          
           <Col>
             <Form.Group className="mb-3">
-              <Form.Label>Unidade Judiciária</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Insira a unidade Judiciária prestadora das informações"
-                name="unidade_judiciaria"
-                value={form.unidade_judiciaria}
-                onChange={handleChange}
-              />
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Form.Group className="mb-3">
-              <Form.Label>Informações sobre a medida de reparacao</Form.Label>
+              <Form.Label>Informações sobre o cumprimento da medida de reparacao</Form.Label>
               <Form.Control
                 as="textarea"
                 placeholder="Insira as informações relevantes sobre o cumprimento da Medida de Reparação"
                 name="infos_relevantes"
                 value={form.infos_relevantes}
                 onChange={handleChange}
+                style={{height: "120px"}}
               />
             </Form.Group>
           </Col>
-          <Col>
-            <Form.Group>
+          
+        </Row>      
+        <Row>    
+          <Col style={{display:"flex", justifyContent:"center" }}>
+            <Form.Group style={{width: "40%"}}>
               <Form.Label>
                 Notificar Alteração/Manutenção do Status de Cumprimento
               </Form.Label>
               <Form.Select
                 name="notificar_estado_cumprimento"
                 onChange={handleChange}
+                style={{textAlign:"center"}}
+                onSubmit={resetarSelect}
               >
                 <option value="0">Selecione uma opção</option>
                 <option value="Pendente de cumprimento">
@@ -118,7 +106,7 @@ function AddInfoReparacoes({ id, setReparacao }) {
             </Form.Group>
           </Col>
         </Row>
-        <Button className="mt-4" variant="success" type="submit">
+        <Button className="mt-4" variant="success" type="submit" >
           Cadastrar informação
         </Button>
       </Form>
