@@ -6,7 +6,7 @@ import styles from "../../p2-style.module.css";
 
 function AddInfoReparacoes({ id, setReparacao }) {
   const [form, setForm] = useState({
-    tribunal: "",
+    // tribunal: "",
     unidade_judiciaria: "",
     infos_relevantes: "",
     notificar_estado_cumprimento: "",
@@ -28,7 +28,7 @@ function AddInfoReparacoes({ id, setReparacao }) {
       setReparacao(response.data);
 
       setForm({
-        tribunal: "",
+        // tribunal: "",
         unidade_judiciaria: "",
         infos_relevantes: "",
         notificar_estado_cumprimento: "",
@@ -57,7 +57,7 @@ function AddInfoReparacoes({ id, setReparacao }) {
       <Form onSubmit={handleSubmit}>
         <Row>
           <Col>
-            <Form.Group className="mb-3">
+            {/* <Form.Group className="mb-3">
               <Form.Label>Tribunal</Form.Label>
               <Form.Control
                 type="text"
@@ -66,7 +66,7 @@ function AddInfoReparacoes({ id, setReparacao }) {
                 value={form.tribunal}
                 onChange={handleChange}
               />
-            </Form.Group>
+            </Form.Group> */}
           </Col>
         </Row>
         <Row>
