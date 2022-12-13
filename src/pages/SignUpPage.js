@@ -28,11 +28,9 @@ function SignUpPage() {
   useEffect(() => {
     try {
       const fetchReparacao = async () => {
-        // const response = await axios.get(`${apiURL}/${id}`);
         const response = await api.get(`/orgao/getall-nologin`);
 
         setOrgaos(response.data);
-        // console.log(Array.from(orgaos))
       };
       fetchReparacao();
     } catch (error) {
@@ -40,7 +38,6 @@ function SignUpPage() {
     }
   }, []);
 
-  // console.log(orgaos)
 
   const renderizarOrgaos = Array.from(orgaos).map((o) => {
       return ( <option value={o._id}>
