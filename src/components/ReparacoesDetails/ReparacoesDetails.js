@@ -5,6 +5,8 @@ import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
 import EditInfoReparacoes from "../EditInfoReparacoes/EditInfoReparacoes";
 import AddInfoReparacoes from "../AddInfoReparacoes/AddInfoReparacoes";
 import api from "../../api/api";
+import * as moment from "moment/moment.js";
+import "moment/locale/pt-br";
 
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/authContext"
@@ -33,6 +35,34 @@ function ReparacoesDetails() {
       console.log(error);
     }
   }, [id]);
+
+function rendEdit(info, index) {
+  if (!loggedInUser) {
+    console.log("Usuário não logado!")
+  } else{
+    if (loggedInUser && loggedInUser.user._id === info.usuario_informante._id) {
+      return (<EditInfoReparacoes
+        id={id}
+        setReparacao={setReparacao}
+        infoIndex={index}
+      />)
+    }    
+  }
+}
+function rendDel(info, index) {
+  if (!loggedInUser) {
+    console.log("Usuário não logado!")
+  } else{
+    if (loggedInUser && loggedInUser.user._id === info.usuario_informante._id) {
+      return (<Button
+        variant="danger"
+        onClick={() => deleteReparacao(index)}
+      >
+        Excluir Informação sobre Cumprimento
+      </Button>)
+    }    
+  }
+}
 
   // -------- FUNÇÃO PARA DELETAR ITEM --------
   const deleteReparacao = async (index) => {
@@ -74,16 +104,19 @@ function ReparacoesDetails() {
                 <h3> Informações dos Responsáveis sobre o Cumprimento</h3>
               </Card.Title>
             </Card.Header>
+            <Container style={{display:"flex", fontSize:"14px"}}>
+              <p>Informação prestada em {moment(info.createdAt).format("LLL")}</p>              
+            </Container>
             <Card.Body>
               <Row>
                 <Col className="text-center">
                   <Card.Text>
                     <strong> Tribunal Informante:</strong> <br />
-                    {info.tribunal}
+                    {info.usuario_informante.orgao[0].NOM_ORGAO}
                   </Card.Text>
                   <Card.Text>
-                    <strong> Unidade interna do Tribunal:</strong> <br />
-                    {info.unidade_judiciaria}
+                    <strong> Usuário Responsável por prestar Informação</strong> <br />
+                    {info.usuario_informante.name}
                   </Card.Text>
                   <Card.Text>
                     <strong>
@@ -105,12 +138,8 @@ function ReparacoesDetails() {
                 </Col>
               </Row>
               <Row className="mt-3">
-                <Col>
-                {loggedInUser &&  <EditInfoReparacoes
-                    id={id}
-                    setReparacao={setReparacao}
-                    infoIndex={index}
-                  />}
+                <Col>                
+                {rendEdit(info,index)}
                 </Col>
                 <Col>
                   <Button variant="secondary" onClick={() => navigate(-1)}>
@@ -118,13 +147,8 @@ function ReparacoesDetails() {
                   </Button>
                 </Col>
                 <Col>
-                {loggedInUser &&  <Button
-                    variant="danger"
-                    onClick={() => deleteReparacao(index)}
-                  >
-                    Excluir Informação sobre Cumprimento
-                  </Button>} 
-                </Col>
+                {rendDel(info,index)} 
+                </Col> 
               </Row>
             </Card.Body>
           </Card>
