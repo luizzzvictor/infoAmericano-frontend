@@ -106,11 +106,11 @@ function ReparacoesDetails() {
               </Row>
               <Row className="mt-3">
                 <Col>
-                  <EditInfoReparacoes
+                {loggedInUser &&  <EditInfoReparacoes
                     id={id}
                     setReparacao={setReparacao}
                     infoIndex={index}
-                  />
+                  />}
                 </Col>
                 <Col>
                   <Button variant="secondary" onClick={() => navigate(-1)}>
@@ -118,12 +118,12 @@ function ReparacoesDetails() {
                   </Button>
                 </Col>
                 <Col>
-                  <Button
+                {loggedInUser &&  <Button
                     variant="danger"
                     onClick={() => deleteReparacao(index)}
                   >
                     Excluir Informação sobre Cumprimento
-                  </Button>
+                  </Button>} 
                 </Col>
               </Row>
             </Card.Body>
