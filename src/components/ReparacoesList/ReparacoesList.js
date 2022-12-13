@@ -155,9 +155,9 @@ function ReparacoesList({ apiURL }) {
                               caso.palavras_chave.indexOf(palavra) ===
                               caso.palavras_chave.length - 1
                             ) {
-                              return `${palavra}.`;
+                              return `${palavra.palavra_chave}.`;
                             } else {
-                              return `${palavra}, `;
+                              return `${palavra.palavra_chave}, `;
                             }
                           })}
                         </div>
