@@ -20,6 +20,8 @@ function ReparacoesDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  console.log(loggedInUser)
+
   // -------- USE EFFECT PARA REQUISIÇÃO --------
   useEffect(() => {
     try {
@@ -40,7 +42,7 @@ function rendEdit(info, index) {
   if (!loggedInUser) {
     console.log("Usuário não logado!")
   } else{
-    if (loggedInUser && loggedInUser.user._id === info.usuario_informante._id) {
+    if (loggedInUser.user._id === info.usuario_informante._id || loggedInUser.user.role === "admin") {
       return (<EditInfoReparacoes
         id={id}
         setReparacao={setReparacao}
@@ -53,7 +55,7 @@ function rendDel(info, index) {
   if (!loggedInUser) {
     console.log("Usuário não logado!")
   } else{
-    if (loggedInUser && loggedInUser.user._id === info.usuario_informante._id) {
+    if (loggedInUser.user._id === info.usuario_informante._id || loggedInUser.user.role === "admin" ) {
       return (<Button
         variant="danger"
         onClick={() => deleteReparacao(index)}
