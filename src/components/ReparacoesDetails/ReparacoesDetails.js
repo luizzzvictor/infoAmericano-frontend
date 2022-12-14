@@ -9,10 +9,12 @@ import * as moment from "moment/moment.js";
 import "moment/locale/pt-br";
 
 import { useContext } from "react";
-import { AuthContext } from "../../contexts/authContext"
+import { AuthContext } from "../../contexts/authContext";
+import generatePDF from "../../services/reportGenerator";
+import styles from "../../p2-style.module.css";
+
 
 function ReparacoesDetails() {
-
   const { loggedInUser } = useContext(AuthContext);
 
   const [reparacao, setReparacao] = useState({});
@@ -20,7 +22,7 @@ function ReparacoesDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  console.log(loggedInUser)
+  // console.log(loggedInUser)
 
   // -------- USE EFFECT PARA REQUISIÇÃO --------
   useEffect(() => {
@@ -38,33 +40,40 @@ function ReparacoesDetails() {
     }
   }, [id]);
 
-function rendEdit(info, index) {
-  if (!loggedInUser) {
-    console.log("Usuário não logado!")
-  } else{
-    if (loggedInUser.user._id === info.usuario_informante._id || loggedInUser.user.role === "admin") {
-      return (<EditInfoReparacoes
-        id={id}
-        setReparacao={setReparacao}
-        infoIndex={index}
-      />)
-    }    
+  function rendEdit(info, index) {
+    if (!loggedInUser) {
+      // console.log("Usuário não logado!")
+    } else {
+      if (
+        loggedInUser.user._id === info.usuario_informante._id ||
+        loggedInUser.user.role === "admin"
+      ) {
+        return (
+          <EditInfoReparacoes
+            id={id}
+            setReparacao={setReparacao}
+            infoIndex={index}
+          />
+        );
+      }
+    }
   }
-}
-function rendDel(info, index) {
-  if (!loggedInUser) {
-    console.log("Usuário não logado!")
-  } else{
-    if (loggedInUser.user._id === info.usuario_informante._id || loggedInUser.user.role === "admin" ) {
-      return (<Button
-        variant="danger"
-        onClick={() => deleteReparacao(index)}
-      >
-        Excluir Informação sobre Cumprimento
-      </Button>)
-    }    
+  function rendDel(info, index) {
+    if (!loggedInUser) {
+      // console.log("Usuário não logado!")
+    } else {
+      if (
+        loggedInUser.user._id === info.usuario_informante._id ||
+        loggedInUser.user.role === "admin"
+      ) {
+        return (
+          <Button variant="danger" onClick={() => deleteReparacao(index)}>
+            Excluir Informação sobre Cumprimento
+          </Button>
+        );
+      }
+    }
   }
-}
 
   // -------- FUNÇÃO PARA DELETAR ITEM --------
   const deleteReparacao = async (index) => {
@@ -103,11 +112,13 @@ function rendDel(info, index) {
           <Card className="text-center w-100">
             <Card.Header>
               <Card.Title className="m-0">
-                <h3> Informações dos Responsáveis sobre o Cumprimento</h3>
+                <h3 style={{fontSize: "1.2rem"}}> Informações dos Responsáveis sobre o Cumprimento</h3>
               </Card.Title>
             </Card.Header>
-            <Container style={{display:"flex", fontSize:"14px"}}>
-              <p>Informação prestada em {moment(info.createdAt).format("LLL")}</p>              
+            <Container style={{ display: "flex", fontSize: "14px" }}>
+              <p>
+                Informação prestada em {moment(info.createdAt).format("LLL")}
+              </p>
             </Container>
             <Card.Body>
               <Row>
@@ -117,7 +128,8 @@ function rendDel(info, index) {
                     {info.usuario_informante.orgao[0].NOM_ORGAO}
                   </Card.Text>
                   <Card.Text>
-                    <strong> Usuário Responsável por prestar Informação</strong> <br />
+                    <strong> Usuário Responsável por prestar Informação</strong>{" "}
+                    <br />
                     {info.usuario_informante.name}
                   </Card.Text>
                   <Card.Text>
@@ -140,17 +152,13 @@ function rendDel(info, index) {
                 </Col>
               </Row>
               <Row className="mt-3">
-                <Col>                
-                {rendEdit(info,index)}
-                </Col>
+                <Col>{rendEdit(info, index)}</Col>
                 <Col>
                   <Button variant="secondary" onClick={() => navigate(-1)}>
                     Voltar
                   </Button>
                 </Col>
-                <Col>
-                {rendDel(info,index)} 
-                </Col> 
+                <Col>{rendDel(info, index)}</Col>
               </Row>
             </Card.Body>
           </Card>
@@ -192,11 +200,31 @@ function rendDel(info, index) {
           </Col>
         </Row>
       </Container>
+      <Container style={{marginTop: "10px", display: "flex", justifyContent:"flex-end"}}>
+        <button
+          className="btn btn-primary"
+          onClick={() => generatePDF(reparacao)}
+        >
+          Gerar Relatório Gerencial
+        </button>      
+        
+      </Container>
       <Container
         style={{ fontFamily: "Playfair Display", marginBottom: "2rem" }}
       >
-        {loggedInUser &&  <AddInfoReparacoes id={id} setReparacao={setReparacao} />}
+        {loggedInUser && (
+          <AddInfoReparacoes id={id} setReparacao={setReparacao} />
+        )}
       </Container>
+      <Container style={{display: "flex"}} >
+      <Row>
+        <h4 className={styles.listaFull}>Histórico de Informações prestadas</h4>          
+      </Row>      
+      </Container>
+      <Row>
+      <hr className={styles.divider}></hr>   
+
+      </Row>
       <Container style={{ fontFamily: "Playfair Display" }}>
         {isLoading && <Spinner className="mt-4" animation="border" />}
         {!isLoading && <Container>{allInfos}</Container>}

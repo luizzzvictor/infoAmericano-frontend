@@ -24,7 +24,7 @@ import LogoutPage     from "./pages/LogoutPage";
 import SignUpPage     from "./pages/SignUpPage";
 import ErrorPage      from "./pages/ErrorPage";
 
-import NavBar         from "./components/NavBar";
+// import NavBar         from "./components/NavBar";
 
 import Usuario        from "./components/Usuarios";
 import Municipio      from "./components/Municipios";
@@ -42,7 +42,7 @@ function App() {
   return (
     <div className="App">
       <AuthContextComponent>
-        <NavBar />
+        {/* <NavBar /> */}
         <ToastContainer/>
         <NavigationBar />
         <Routes>

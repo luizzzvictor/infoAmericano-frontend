@@ -17,7 +17,7 @@
 .inicial {
     font-family: 'Playfair Display';
     text-align: justify;
-    font-size: 2rem;
+    font-size: 1.6rem;
     border: none;
     padding: 2rem 3rem;
     width: fit-content;
@@ -25,12 +25,12 @@
 
 .navbar {
     font-family: 'Playfair Display';
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 600;
     text-align: justify;
     border: none;
-    padding: 1rem;
-    margin: 1rem;
+    /* padding: 1rem;
+    margin: 1rem; */
     background-color: #85144B;
     background-image: linear-gradient(15deg, rgb(33, 167, 195) 0%, rgb(223, 237, 244) 100%)
 }
@@ -47,4 +47,15 @@
     background-clip: padding-box;
     border: 1px solid #adb5bd;
     border-radius: 0.5rem;
+    font-size: 1.5rem;
+}
+
+.listaFull {
+  padding: 2rem 3rem;
+  font-family: "Playfair Display"
+}
+
+.divider {
+  border-top: 8px solid #bbb;
+  border-radius: 5px;
 }

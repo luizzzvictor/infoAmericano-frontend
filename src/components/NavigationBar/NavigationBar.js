@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Button, Container, Image, Nav, Navbar, NavDropdown, OverlayTrigger, Popover } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../../p2-style.module.css";
 
@@ -86,7 +86,125 @@ function NavigationBar(props) {
         </Navbar.Collapse>
       </Container>
     </Navbar>
-    )}</>
+    )}
+    { loggedInUser && (
+    <Navbar className={styles.navbar} collapseOnSelect expand="lg">
+      <Container>
+        <Navbar.Brand
+          className={styles.navbarBtn}
+          onClick={() => {
+            navigate(`/inicial`);
+          }}
+          style={{ cursor: "pointer", fontSize: "1.5rem" }}
+        >
+          InfoAmericano
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link
+              className={styles.navbarBtn}
+              onClick={() => {
+                navigate(`/reparacoes/`);
+              }}
+            >
+              Medidas de Reparacão por Caso
+            </Nav.Link>
+            <Nav.Link
+              className={styles.navbarBtn}
+              onClick={() => {
+                navigate(`/usuario`);
+              }}
+            >
+              Usuários
+            </Nav.Link>
+            <Nav.Link
+              className={styles.navbarBtn}
+              onClick={() => {
+                navigate(`/municipio`);
+              }}
+            >
+              Municípios
+            </Nav.Link>
+            <Nav.Link
+              className={styles.navbarBtn}
+              onClick={() => {
+                navigate(`/orgao`);
+              }}
+            >
+              Órgãos
+            </Nav.Link>
+            <Nav.Link
+              className={styles.navbarBtn}
+              onClick={() => {
+                navigate(`/caso`);
+              }}
+            >
+              Casos
+            </Nav.Link>
+            <Nav.Link
+              className={styles.navbarBtn}
+              onClick={() => {
+                navigate(`/reparacao`);
+              }}
+            >
+              Reparações
+            </Nav.Link>
+            <Nav.Link
+              className={styles.navbarBtn}
+              onClick={() => {
+                navigate(`/assunto`);
+              }}
+            >
+              Assuntos
+            </Nav.Link>
+            <Nav.Link
+              className={styles.navbarBtn}
+              onClick={() => {
+                navigate(`/logout`);
+              }}
+            >
+              Logout
+            </Nav.Link>
+            
+            <OverlayTrigger
+                    placement="bottom"
+                    overlay={
+                      <Popover id="popover-basic">
+                        <Popover.Header as="h3">
+                          {loggedInUser.user.name}
+                        </Popover.Header>
+                        <Popover.Body>
+                          <strong>Perfil:</strong>{" "}
+                          {loggedInUser.user.role}
+                        </Popover.Body>
+                      </Popover>
+                    }
+                  >
+                    {({ ref, ...triggerHandler }) => (
+                      <Button
+                        variant="light"
+                        {...triggerHandler}
+                        className="d-inline-flex align-items-center"
+                      >
+                        <Image
+                          ref={ref}
+                          roundedCircle
+                          src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
+                          style={{ width: "30px" }}
+                        />
+                      </Button>
+                    )}
+                  </OverlayTrigger>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+    )}
+    
+    
+    
+    </>
 
   );
 }

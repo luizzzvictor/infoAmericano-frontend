@@ -16,6 +16,9 @@ import {
 import { Chrono } from "react-chrono";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api.js";
+import styles from "../../p2-style.module.css";
+
+
 
 function ReparacoesList({ apiURL }) {
   const [reparacoes, setReparacoes] = useState([]);
@@ -399,7 +402,7 @@ function ReparacoesList({ apiURL }) {
   // /\ /\
 
   return (
-    <Container style={{ fontFamily: "Playfair Display" }}>
+    <Container className={styles.listaFull}>
       <Card className="text-center w-100">
         <Card.Header>
           <Card.Title className="m-0">

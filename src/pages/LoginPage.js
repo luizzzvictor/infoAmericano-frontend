@@ -31,7 +31,7 @@ function LoginPage() {
             navigate("/admin")
         } */
 
-      // navigate("/profile");
+      navigate("/inicial");
       // navigate("/");
 
     } catch (error) {

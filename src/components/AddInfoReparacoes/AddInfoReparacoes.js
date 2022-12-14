@@ -61,7 +61,7 @@ function AddInfoReparacoes({ id, setReparacao }) {
   return (
     <Container>
       <h2 className={styles.listForm}>
-        Novas informações sobre Medida de Reparação
+        Cadastrar novas informações sobre Medida de Reparação
       </h2>
       <Form onSubmit={handleSubmit}>
         <Row>
