@@ -34,7 +34,7 @@ function LogoutPage() {
   function signOut() {
     localStorage.removeItem("loggedInUser");
     setLoggedInUser(null);
-    navigate("/");
+    navigate("/inicial");
   }
 
   return (
