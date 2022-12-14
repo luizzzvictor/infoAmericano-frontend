@@ -14,6 +14,7 @@ function SignUpPage() {
     telefone: "",
     role: "",
     orgao: "",
+    caso_correlato: "",
     confirmEmail: true,
     aprovadoUser: true,
     active: true,
@@ -22,7 +23,7 @@ function SignUpPage() {
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
-//////////////////////RENDER ORGAOS NO FORM/////////////////////////////////
+  //////////////////////RENDER ORGAOS NO FORM/////////////////////////////////
   const [orgaos, setOrgaos] = useState({});
 
   useEffect(() => {
@@ -38,13 +39,31 @@ function SignUpPage() {
     }
   }, []);
 
-
   const renderizarOrgaos = Array.from(orgaos).map((o) => {
-      return ( <option value={o._id}>
-      {o.NOM_ORGAO}
-    </option>)
-    })
+    return <option value={o._id}>{o.NOM_ORGAO}</option>;
+  });
 
+  //////////////////////RENDER VÍTIMA/REPRESENTANTE NO FORM/////////////////////////////////
+  const [casos, setCasos] = useState({});
+
+  useEffect(() => {
+    try {
+      const fetchCasos = async () => {
+        const response = await api.get(`/casosCorteIDH/`);
+        setCasos(response.data);
+      };
+      fetchCasos();
+      console.log(casos);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  console.log(casos);
+
+  const renderizarCasoVitima = Array.from(casos).map((nomeCaso) => {
+    return <option value={nomeCaso._id}>{nomeCaso.caso}</option>;
+  });
 
   /////////////////////////////////////////////////////////
 
@@ -59,8 +78,8 @@ function SignUpPage() {
 
     //disparo a requisição de cadastro para o meu servidor
     try {
-      console.log(form)
-      await api.post("/usuario/sign-up", {...form});
+      console.log(form);
+      await api.post("/usuario/sign-up", { ...form });
       navigate("/login");
     } catch (error) {
       console.log(error);
@@ -130,14 +149,52 @@ function SignUpPage() {
 
         <Form.Group className="mb-3">
           <Form.Label>Tipo Usuário: </Form.Label>
-          <Form.Control
+
+          <Form.Select name="role" value={form.role} onChange={handleChange}>
+            <option value="">Selecione uma opção</option>
+            <option value="admin">Administrador</option>
+            <option value="vitima">Vítima</option>
+            <option value="interessado">Interessado</option>
+            <option value="representante">Representante</option>
+            <option value="prestador">
+              Autoridade Prestadora de Informação
+            </option>
+          </Form.Select>
+          {/* <Form.Control
             type="text"
             placeholder="admin / prestador / vitima / representante / interessado"
             name="role"
             value={form.role}
             onChange={handleChange}
-          />
+          /> */}
         </Form.Group>
+        {form.role === "vitima" && (
+          <Form.Group className="mb-3">
+            <Form.Label>Caso Correlato à Vítima ou Representante: </Form.Label>
+            <Form.Select
+              name="caso_correlato"
+              value={form.caso_correlato}
+              onChange={handleChange}
+            >
+              <option value="">Selecione uma opção</option>
+              {renderizarCasoVitima}
+            </Form.Select>
+          </Form.Group>
+        )}
+
+        {form.role === "representante" && (
+          <Form.Group className="mb-3">
+            <Form.Label>Caso Correlato à Vítima ou Representante: </Form.Label>
+            <Form.Select
+              name="caso_correlato"
+              value={form.caso_correlato}
+              onChange={handleChange}
+            >
+              <option value="">Selecione uma opção</option>
+              {renderizarCasoVitima}
+            </Form.Select>
+          </Form.Group>
+        )}
 
         {/* <Form.Group className="mb-3">
           <Form.Label>Código Órgão (CNJ): </Form.Label>
@@ -151,18 +208,12 @@ function SignUpPage() {
         </Form.Group> */}
 
         <Form.Group>
-              <Form.Label>
-                Tribunal
-              </Form.Label>
-              <Form.Select
-                name="orgao"
-                value={form.orgao}
-                onChange={handleChange}
-              >
-               <option value="0">Selecione uma opção</option>
-               {renderizarOrgaos}
-              </Form.Select>
-            </Form.Group>
+          <Form.Label>Tribunal</Form.Label>
+          <Form.Select name="orgao" value={form.orgao} onChange={handleChange}>
+            <option value="0">Selecione uma opção</option>
+            {renderizarOrgaos}
+          </Form.Select>
+        </Form.Group>
 
         <Button className="my-3" variant="dark" type="submit">
           Cadastrar usuário
@@ -170,10 +221,9 @@ function SignUpPage() {
       </Form>
       <Form.Text>
         Já possui cadastro? Faça já o
-        <Link className="text-warning fw-bold text-decoration-none" 
-            to="/login">
-            {" "}
-            login
+        <Link className="text-warning fw-bold text-decoration-none" to="/login">
+          {" "}
+          login
         </Link>
         .
       </Form.Text>
