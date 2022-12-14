@@ -30,9 +30,9 @@ import Usuario        from "./components/Usuarios";
 import Municipio      from "./components/Municipios";
 import Orgao          from "./components/Orgaos";
 import Assunto        from "./components/Assuntos";
+import Caso           from "./components/Casos";
 
 /*
-import CasoPage       from "./pages/CasoPage";
 import ReparacaoPage  from "./pages/ReparacaoPage";
 import InformacaoPage from "./pages/InformacaoPage";
 */
@@ -56,6 +56,7 @@ function App() {
           <Route path="/municipio"    element={<ProtectRoute Component={Municipio} />} />
           <Route path="/orgao"        element={<ProtectRoute Component={Orgao} />} />
           <Route path="/assunto"      element={<ProtectRoute Component={Assunto} />} />
+          <Route path="/caso"         element={<ProtectRoute Component={Caso} />} />
 
           <Route path="/inicial"        element={<Apresentacao/>} />          
           <Route path="/reparacoes"     element={<ReparacoesList/>} />
@@ -65,7 +66,6 @@ function App() {
           <Route path="*"              element={<ErrorPage />} />          
 
           {/*
-          <Route path="/caso"            element={<ProtectRoute Component={CasoPage} />} />
           <Route path="/reparacao"       element={<ProtectRoute Component={ReparacaoPage} />} />
           <Route path="/informacao"      element={<ProtectRoute Component={InformacaoPage} />} />
            */}

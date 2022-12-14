@@ -26,7 +26,7 @@ function NavBar() {
                 <Link className="nav-link" to="/orgao"      >Órgãos</Link>
                 <Link className="nav-link" to="/caso"       >Casos</Link>
                 <Link className="nav-link" to="/reparacao"  >Reparações</Link>
-                <Link className="nav-link" to="/informacao" >Informações</Link>
+                {/* <Link className="nav-link" to="/informacao" >Informações</Link> */}
                 <Link className="nav-link" to="/assunto"    >Assuntos</Link> 
                 <Link className="nav-link" to="/logout"     >Logout</Link>
               {/* </>
