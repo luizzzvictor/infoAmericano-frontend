@@ -15,20 +15,18 @@ function Casos() {
   const handleClose = () => { setShow(false); setStatusAlt(false); };
   const handleShow  = () => setShow(true);
 
-  const [mMunicipios, setMunicipios] = useState([]);
   const [mPalavrasChaves, setPalavrasChaves] = useState([]);
+  const [mPalChavSel, setPalChavSel] = useState([]);
 
   useEffect(() => {
     lerCasos()
-  }, [])  
+  },[])  
 
   const lerCasos = () => {
     try {
       const fetchCasos = async () => {
           let response = await api.get("/casosCorteIDH")
           setCasos(response.data)
-          response = await api.get("/municipio/getall")
-          setMunicipios(response.data)
           response = await api.get("/assunto/getall")
           setPalavrasChaves(response.data)
           setIsLoading(false)
@@ -39,20 +37,72 @@ function Casos() {
     }
   }
 
-  const renderizarMunicipios = Array.from(mMunicipios).map((o) => {
-    return <option value={o._id}>{o.NOM_ORGAO}</option>;
+  const renderizarPalavrasChaves = Array.from(mPalavrasChaves).map((o) => {
+    return <option key={o._id} value={o._id}>{o.palavra_chave}</option>;
   });
 
-  const renderizarPalavrasChaves = Array.from(mPalavrasChaves).map((o) => {
-    return <option value={o._id}>{o.palavra_chave}</option>;
-  });
+  const aceitaPkey = async (e) => {
+    e.preventDefault()
+    let clone = [...mPalChavSel, document.getElementById("multizero").value]
+    if ( document.getElementById("multizero").value !== "") {
+        if ( !mPalChavSel.includes(document.getElementById("multizero").value) ) {
+            setPalChavSel( [...mPalChavSel, document.getElementById("multizero").value] )
+            document.getElementById("multizero").text = "selecione para inserir";
+        }
+    }
+    //
+    let obj = {};
+    const pagu01 = async () => {
+      obj[`pke${0}`] = "";
+      for (let x=0;x<clone.length;x++) {
+        obj[`pke${x+1}`] = clone[x];
+      }
+    }
+    await pagu01()
+    let dupla = {...form, ...obj}
+    setForm(dupla)
+    //
+  }
+
+  const removePkey = async (e) => {
+    e.preventDefault()
+    let clone = [...mPalChavSel]
+    clone.splice( parseInt(e.target.name)-1, 1)
+
+    await setPalChavSel( clone )
+    //
+    let obj = {};
+    const pagu01 = async () => {
+      //obj[`pke${0}`] = "";
+      for (let x=0;x<clone.length;x++) {
+        obj[`pke${x+1}`] = clone[x];
+      }
+    }
+    await pagu01()
+
+    let newObj = {}
+    for ( const [key, value] of Object.entries(form)) {
+        if ( key.slice(0,3) !== "pke" ) {
+            //console.log("vamos COPIAR : ", key, value, `key${clone.length}`)
+            newObj[`${key}`] = value;
+        }
+    }
+
+    let dupla = {...newObj, ...obj}
+    setForm(dupla)
+
+    //console.log(form)
+    //console.log(dupla)
+    //
+  }
 
   const preparaFormNova = () => {
     handleShow();
+    setPalChavSel([])
     setForm({ 
-        tipo_de_decisao: "",
+        tipo_de_decisao: "Caso Contencioso",
         caso: "",
-        estado: "",
+        estado: "DF",
         cidade: "",
         latitude: 0,
         longitude: 0,
@@ -60,7 +110,7 @@ function Casos() {
         resumo_caso: "",
         vitimas: "",
         representantes: "",
-        //palavras_chave: [],
+        palavras_chave: [null],
         sentenca_link: "",
         link_portugues: "",
         ordem_sentencas: 0,
@@ -69,8 +119,8 @@ function Casos() {
         cidh_merito: "",
         cidh_submissao: "",
         corte_sentenca: "",
-        em_supervisao: "",
-        em_tramitacao: "",
+        em_supervisao: "SIM",
+        em_tramitacao: "NAO",
         n_medidas_reparacao: 0,
         // medidas_reparacao: [],
     });
@@ -81,7 +131,22 @@ function Casos() {
       setIsLoading(true)
       const fetchCasos = async () => {
           const response = await api.get(`/casosCorteIDH/${id}`)
+
+          response.data.palavras_chave && 
+            setPalChavSel( await response.data.palavras_chave.map(o=>o._id) )
+          
+          let obj = {};
+          const pagu01 = async () => {
+            obj[`pke${0}`] = "";
+            for (let x=0;x<response.data.palavras_chave.length;x++) {
+              obj[`pke${x+1}`] = response.data.palavras_chave[x]._id;
+            }
+          }
+          await pagu01()
+          console.log("01-02:", obj)
+
           setForm({
+            ...obj,
             _id: response.data._id,
             tipo_de_decisao: response.data.tipo_de_decisao,
             caso: response.data.caso,
@@ -93,7 +158,9 @@ function Casos() {
             resumo_caso: response.data.resumo_caso,
             vitimas: response.data.vitimas,
             representantes: response.data.representantes,
-            //palavras_chave: [],
+            
+            // palavras_chave: response.data.palavras_chave,
+
             sentenca_link: response.data.sentenca_link,
             link_portugues: response.data.link_portugues,
             ordem_sentencas: response.data.ordem_sentencas,
@@ -109,14 +176,14 @@ function Casos() {
             n_medidas_reparacao: response.data.n_medidas_reparacao,
             // medidas_reparacao: [],
           });
-          
-          console.log("-1-:",response.data.cidh_peticao,typeof response.data.cidh_peticao)
-          console.log("-2-:",response.data.cidh_admissibilidade, typeof response.data.cidh_admissibilidade)
-          console.log("-3-:",form.cidh_peticao, typeof form.cidh_peticao)
+
+          //console.log("-1-:",response.data.cidh_peticao,typeof response.data.cidh_peticao)
+          //console.log("-2-:",response.data.cidh_admissibilidade, typeof response.data.cidh_admissibilidade)
+          //console.log("-3-:",form.cidh_peticao, typeof form.cidh_peticao)
 
           setStatusAlt(true)
+          setIsLoading(false)          
           handleShow()
-          setIsLoading(false)
       }
       fetchCasos()
     } catch (error) {
@@ -155,7 +222,22 @@ function Casos() {
           delete clone.cidade
           clone.em_supervisao = ( clone.em_supervisao === "SIM" ? true : false )
           clone.em_tramitacao = ( clone.em_tramitacao === "SIM" ? true : false )
-          console.log(clone);
+
+          const mKeys = [...document.getElementsByClassName("multiplicar")].map( (o,i) => o.value ).filter(o => o !== "" );
+          clone.palavras_chave = mKeys
+          //excluir do form os keys para não ir no FORM
+          let newObj = {}
+          for ( const [key, value] of Object.entries(clone)) {
+              if ( key.slice(0,3) !== "pke" ) {
+                  newObj[`${key}`] = value;
+              }
+          }
+          let dupla = {...newObj}
+          setForm(dupla)      
+
+          console.log("==============================================")
+          console.log(dupla);
+          console.log("==============================================")
           await api.put(`/casosCorteIDH/edit/${form._id}`, clone)
         } else {
           const clone = { ...form }
@@ -164,7 +246,22 @@ function Casos() {
           delete clone.cidade
           clone.em_supervisao = ( clone.em_supervisao === "SIM" ? true : false )
           clone.em_tramitacao = ( clone.em_tramitacao === "SIM" ? true : false )
-          console.log(clone);
+
+          const mKeys = [...document.getElementsByClassName("multiplicar")].map( (o,i) => o.value ).filter(o => o !== "" );
+          clone.palavras_chave = mKeys
+          //excluir do form os keys para não ir no FORM
+          let newObj = {}
+          for ( const [key, value] of Object.entries(clone)) {
+              if ( key.slice(0,3) !== "pke" ) {
+                  newObj[`${key}`] = value;
+              }
+          }
+          let dupla = {...newObj}
+          setForm(dupla)      
+
+          console.log("==============================================")
+          console.log(dupla);
+          console.log("==============================================")
           await api.post("/casosCorteIDH/create", clone)
         }        
         lerCasos()
@@ -379,15 +476,25 @@ function Casos() {
                                     </select>
                                 </Form.Group>
                             </div>
+
                             <div className="col-6">
                                 <Form.Group className="lh-1">
                                     <Form.Label>Cidade: </Form.Label>
-                                    <select className="form-control" name="cidade" value={form.cidade} 
+
+                                    <input className="form-control" type="text"
+                                    placeholder="Cidade"
+                                    name="cidade" value={form.cidade} onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    />                                    
+
+                                    {/* <select className="form-control" name="cidade" value={form.cidade} 
                                         onChange={handleChange} onBlur={handleBlur}>
                                         { renderizarMunicipios }
-                                    </select>
+                                    </select> */}
+
                                 </Form.Group>
                             </div>
+
                             <div className="col-2">
                                 <Form.Group className="lh-1">
                                     <Form.Label>Lat: </Form.Label>
@@ -485,19 +592,48 @@ function Casos() {
                             </div>
                         </div>
 
-                        <div className="multiplicar row mt-1">
-                            <div className="col-2 mt-1">Palavra-Chave:</div>
-                            <div className="col-8">
-                               <select className="form-control" name="pke0" value={form.pkey0} 
-                                   onChange={handleChange} onBlur={handleBlur}>
-                                   { renderizarPalavrasChaves }
-                               </select>
-                            </div>
-                        </div>
-
                         <div className="text-center mt-3">
                           <Button style={{width: "70%"}} variant="success" type="submit">GRAVAR</Button>
                         </div>
+
+                        <div className="row mt-4">
+                            <div className="col-2 mt-1">Palavra-Chave:</div>
+                            <div className="col-8">
+                                <select id="multizero" className="form-control multiplicar" name={`pke${0}`} value={form[`pke${0}`]}
+                                    onChange={handleChange} onBlur={handleBlur}
+                                >
+                                    <option value="">selecione para inserir</option>
+                                    { renderizarPalavrasChaves }
+                                </select>
+                            </div>
+                            <div className="col-2 text-start">
+                              <Button style={{width: "50%"}} onClick={aceitaPkey} variant="success">+</Button>
+                            </div>
+                        </div>
+
+                        {/* { mPalChavSel.length > 0 && renderizarMultiplasPalavrasChaves } */}
+                        {/* { atualizaOnChange } */}
+
+                        { mPalChavSel.length > 0 && (  
+                            Array.from(mPalChavSel).map( (o,i) => {
+                                //console.log("chegou aqui..@@@332.");
+                                return (
+                                    <div key={i} className="row mt-1">
+                                        <div className="col-2 mt-1">Palavra-Chave:</div>
+                                        <div className="col-8">
+                                            {/* <select id={`pke${i}`} className="form-control multiplicar" name={`pke${i}`} value={mPalChavSel[i]} > */}
+                                            <select id={`pke${i+1}`} className="form-control multiplicar" name={`pke${i+1}`} value={form[`pke${i+1}`]}>
+                                                <option value="">selecione para inserir</option>
+                                                { renderizarPalavrasChaves }
+                                            </select>
+                                        </div>
+                                        <div className="col-2 text-start">
+                                            <Button style={{width: "50%"}} name={i+1} onClick={removePkey} variant="danger">-</Button>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        )}
 
                     </Form>
                  </Modal.Body>
@@ -533,7 +669,7 @@ function Casos() {
             }
 
         </Container>
-    
+
     </div>
 
   );

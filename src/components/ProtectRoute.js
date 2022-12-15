@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
 function ProtectRoute({ Component }) {
   const { loggedInUser } = useContext(AuthContext);
 
-  console.log(loggedInUser);
+  //console.log(loggedInUser);
 
   if (loggedInUser) {
     return <Component />;
