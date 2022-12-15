@@ -1,14 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Container, Image, Nav, Navbar, NavDropdown, OverlayTrigger, Popover } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../../p2-style.module.css";
+import api from "../../api/api";
 
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/authContext";
 
-function NavigationBar(props) {
+function NavigationBar() {
 
   const { loggedInUser } = useContext(AuthContext);
+
+  // console.log(loggedInUser)
+
+  // const[usuario, setUsuario] = useState()
+  // const [isLoading, setIsLoading] = useState(true)
+
+
+  // useEffect(() => {
+  //   async function fetchUserData() {
+  //     try {
+        
+  //       const response = await api.get(`usuario/getid/${loggedInUser.user._id}`);
+  //       setUsuario(response.data);
+  //       setIsLoading(false);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   fetchUserData();
+  // }, []);
+  
+
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -175,7 +198,7 @@ function NavigationBar(props) {
                           {loggedInUser.user.name}
                         </Popover.Header>
                         <Popover.Body>
-                          <strong>Perfil:</strong>{" "}
+                          <strong>Perfil</strong>{" "}
                           {loggedInUser.user.role}
                         </Popover.Body>
                       </Popover>
