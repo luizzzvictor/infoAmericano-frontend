@@ -31,6 +31,7 @@ import Municipio      from "./components/Municipios";
 import Orgao          from "./components/Orgaos";
 import Assunto        from "./components/Assuntos";
 import Caso           from "./components/Casos";
+import VitCaso        from "./components/VitCaso";
 
 /*
 import ReparacaoPage  from "./pages/ReparacaoPage";
@@ -57,6 +58,7 @@ function App() {
           <Route path="/orgao"        element={<ProtectRoute Component={Orgao} />} />
           <Route path="/assunto"      element={<ProtectRoute Component={Assunto} />} />
           <Route path="/caso"         element={<ProtectRoute Component={Caso} />} />
+          <Route path="/vitima"       element={<ProtectRoute Component={VitCaso} />} />
 
           <Route path="/inicial"        element={<Apresentacao/>} />          
           <Route path="/reparacoes"     element={<ReparacoesList/>} />

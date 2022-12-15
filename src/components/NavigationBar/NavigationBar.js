@@ -238,6 +238,17 @@ function NavigationBar() {
                   </Nav.Link>
                 )}
 
+                {loggedInUser.user.role === "vitima" && (
+                  <Nav.Link
+                    className={styles.navbarBtn}
+                    onClick={() => {
+                      navigate(`/vitima`);
+                    }}
+                  >
+                    Respeito à Vítima
+                  </Nav.Link>
+                )}
+
                 <Nav.Link
                   className={styles.navbarBtn}
                   onClick={() => {
