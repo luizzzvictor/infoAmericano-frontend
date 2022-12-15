@@ -31,9 +31,9 @@ import Municipio      from "./components/Municipios";
 import Orgao          from "./components/Orgaos";
 import Assunto        from "./components/Assuntos";
 import Caso           from "./components/Casos";
+import Reparacao      from "./components/Reparacao";
 
 /*
-import ReparacaoPage  from "./pages/ReparacaoPage";
 import InformacaoPage from "./pages/InformacaoPage";
 */
 
@@ -57,6 +57,7 @@ function App() {
           <Route path="/orgao"        element={<ProtectRoute Component={Orgao} />} />
           <Route path="/assunto"      element={<ProtectRoute Component={Assunto} />} />
           <Route path="/caso"         element={<ProtectRoute Component={Caso} />} />
+          <Route path="/reparacao"    element={<ProtectRoute Component={Reparacao} />} />
 
           <Route path="/inicial"        element={<Apresentacao/>} />          
           <Route path="/reparacoes"     element={<ReparacoesList/>} />
@@ -64,16 +65,6 @@ function App() {
           <Route path='/sobre'          element={<Sobre/>} />
 
           <Route path="*"              element={<ErrorPage />} />          
-
-          {/*
-          <Route path="/reparacao"       element={<ProtectRoute Component={ReparacaoPage} />} />
-          <Route path="/informacao"      element={<ProtectRoute Component={InformacaoPage} />} />
-           */}
-
-          {/* 
-          <Route path="/" element={<HomePage />} />
-          <Route path="*" element={<ErrorPage />} /> */
-          }
 
         </Routes>
       </AuthContextComponent>
