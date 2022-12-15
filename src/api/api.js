@@ -1,6 +1,12 @@
 import axios from 'axios'
 
 // original
+// const apiURLs = {
+//    development: "http://localhost:8080",
+//    production:  "https://infoamericano.fly.dev/"
+// }
+
+// roda front-end (local) acessando base de dados remota (criada pelo Luiz)
  const apiURLs = {
     development: "http://localhost:8080",
     production:  "https://infoamericano.fly.dev/"

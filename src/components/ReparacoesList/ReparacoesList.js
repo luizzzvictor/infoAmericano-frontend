@@ -415,7 +415,7 @@ function ReparacoesList({ apiURL }) {
         </Card.Header>
       </Card>
       {isLoading && <Spinner className="mt-4" animation="border" />}
-      {!isLoading && <Accordion>{renderCasoHeader}</Accordion>}
+      {!isLoading && <Accordion defaultActiveKey="0">{renderCasoHeader}</Accordion>}
     </Container>
   );
 }

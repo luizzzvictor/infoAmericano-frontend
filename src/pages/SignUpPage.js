@@ -14,7 +14,7 @@ function SignUpPage() {
     telefone: "",
     role: "",
     orgao: "",
-    caso_correlato: "",
+    caso_correlato: {},
     confirmEmail: true,
     aprovadoUser: true,
     active: true,
@@ -22,6 +22,8 @@ function SignUpPage() {
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
+    
+    console.log(form)
   }
   //////////////////////RENDER ORGAOS NO FORM/////////////////////////////////
   const [orgaos, setOrgaos] = useState({});
@@ -59,7 +61,7 @@ function SignUpPage() {
     }
   }, []);
 
-  console.log(casos);
+  // console.log(casos);
 
   const renderizarCasoVitima = Array.from(casos).map((nomeCaso) => {
     return <option value={nomeCaso._id}>{nomeCaso.caso}</option>;
@@ -78,6 +80,11 @@ function SignUpPage() {
 
     //disparo a requisição de cadastro para o meu servidor
     try {
+
+      if (form.role === "admin" || "prestador" || "interessado") {
+        delete form.caso_correlato
+      }
+
       console.log(form);
       await api.post("/usuario/sign-up", { ...form });
       navigate("/login");
