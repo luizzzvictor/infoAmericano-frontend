@@ -32,11 +32,11 @@ function Reparacoes() {
   useEffect( () => {
     lerBDbasico()
     // depois de chamar lerBDbasico continua a execução (sem esperar retorno da função acima)
-  })
+  },[])
 
   async function lerBDbasico () {
     const retReparacoes = await lerReparacoes()
-    console.log(mReparacoes)
+    //console.log(mReparacoes)
     const retCasos = await lerCasos()
     setIsLoading(false)
     setReparacoes(retReparacoes)

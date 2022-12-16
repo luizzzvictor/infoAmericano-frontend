@@ -1,5 +1,5 @@
 import api from "../api/api.js";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -17,10 +17,9 @@ import {
   faUpDown,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { AuthContext } from "../contexts/authContext";
-
 function Usuarios() {
-  const { setLoggedInUser } = useContext(AuthContext);
+
+  // const { setLoggedInUser } = useContext(AuthContext);
 
   // Matriz de dados carregada da base de dados
   const [mUsuarios, setUsuarios] = useState([]);
@@ -69,7 +68,7 @@ function Usuarios() {
   // console.log(mUsuarios)
 
   const renderizarOrgaos = Array.from(orgaos).map((o) => {
-    return <option value={o._id}>{o.NOM_ORGAO}</option>;
+    return <option key={o._id} value={o._id}>{o.NOM_ORGAO}</option>;
   });
 
   /////////////////////////////////////////////////////////
@@ -101,9 +100,9 @@ function Usuarios() {
       telefone: "",
       role: "",
       orgao: "",
-      confirmEmail: true,
-      aprovadoUser: true,
-      active: true,
+      confirmEmail: "SIM",
+      aprovadoUser: "SIM",
+      active: "SIM",
     });
   };
 
@@ -117,7 +116,7 @@ function Usuarios() {
       setIsLoading(true);
       const fetchUsuarios = async () => {
         const response = await api.get(`/usuario/getid/${id}`);
-        console.log(response)
+        //console.log(response.data)
         setForm({
           name: response.data.name,
           _id: response.data._id,
@@ -125,10 +124,11 @@ function Usuarios() {
           telefone: response.data.telefone,
           role: response.data.role,
           orgao: response.data.orgao,
-          confirmEmail: response.data.confirmEmail,
-          aprovadoUser: response.data.aprovadoUser,
-          active: response.data.active,
+          confirmEmail: ( response.data.confirmEmail === true ? "SIM" : "NAO" ),
+          aprovadoUser: ( response.data.aprovadoUser === true ? "SIM" : "NAO" ), 
+          active: ( response.data.active === true ? "SIM" : "NAO" ),
         });
+        //console.log(form)
         setStatusAlt(true);
         handleShow();
         setIsLoading(false);
@@ -177,9 +177,21 @@ function Usuarios() {
         const clone = { ...form };
         delete clone._id;
         console.log(clone);
+
+        clone.confirmEmail = ( clone.confirmEmail === "SIM" ? true : false )
+        clone.aprovadoUser = ( clone.aprovadoUser === "SIM" ? true : false )
+        clone.active = ( clone.active === "SIM" ? true : false )
+
         await api.put(`/usuario/replaceid/${form._id}`, clone);
       } else {
-        await api.post("/usuario/insert", form);
+
+        const clone = { ...form };
+
+        clone.confirmEmail = ( clone.confirmEmail === "SIM" ? true : false )
+        clone.aprovadoUser = ( clone.aprovadoUser === "SIM" ? true : false )
+        clone.active = ( clone.active === "SIM" ? true : false )
+
+        await api.post("/usuario/insert", clone);
       }
       lerUsuarios();
       handleClose();
@@ -200,14 +212,14 @@ function Usuarios() {
     .map((Usuario) => {
       return (
         <tr key={Usuario._id}>
-          <td className="p-1">{Usuario.name}</td>
-          <td className="p-1">{Usuario.email}</td>
-          <td className="p-1">{Usuario.telefone}</td>
-          <td className="p-1">{Usuario.role}</td>
-          <td className="p-1">{Usuario.orgao[0].NOM_ORGAO}</td>
-          <td className="p-1">{Usuario.confirmEmail}</td>
-          <td className="p-1">{Usuario.aprovadoUser}</td>
-          <td className="p-1">{Usuario.active}</td>
+          <td className="p-1 text-start">{Usuario.name}</td>
+          <td className="p-1 text-start">{Usuario.email}</td>
+          <td className="p-1 text-start">{Usuario.telefone}</td>
+          <td className="p-1 text-start">{Usuario.role}</td>
+          <td className="p-1 text-start">{Usuario.orgao[0].NOM_ORGAO}</td>
+          <td className="p-1">{Usuario.confirmEmail === true ? "SIM" : "NÃO" }</td>
+          <td className="p-1">{Usuario.aprovadoUser === true ? "SIM" : "NÃO" }</td>
+          <td className="p-1">{Usuario.active === true ? "SIM" : "NÃO" }</td>
 
           <td className="p-1 text-center">
             <Button
@@ -332,14 +344,25 @@ function Usuarios() {
               </Form.Group>
               <Form.Group className="mb-3 lh-1 fw-bold">
                 <Form.Label>Tipo do Usuário: </Form.Label>
-                <Form.Control
+
+                {/* <Form.Control
                   type="text"
                   placeholder="admin, prestador, interessado, vitima, representante"
                   name="role"
                   value={form.role}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                />
+                /> */}
+
+                <select className="form-control" name="role" value={form.role}
+                  onChange={handleChange} onBlur={handleBlur}>
+                    <option value="admin">admin</option>
+                    <option value="prestador">prestador</option>
+                    <option value="interessado">interessado</option>
+                    <option value="vitima">vitima</option>
+                    <option value="representante">representante</option>
+                </select>
+
               </Form.Group>
               {/* <Form.Group className="mb-3 lh-1 fw-bold">
                 <Form.Label>Nome do Órgão: </Form.Label>
@@ -364,20 +387,27 @@ function Usuarios() {
                 </Form.Select>
               </Form.Group>
 
-              <div className="row">
+              <div className="row mt-3">
                 <div className="col-4">
                   <Form.Group
                     className="mb-3 lh-1 fw-bold"
                     style={{ width: "120px" }}
                   >
                     <Form.Label>E-mail Conf</Form.Label>
-                    <Form.Control
+                    
+                    {/* <Form.Control
                       type="text"
                       name="confirmEmail"
                       value={form.confirmEmail}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                    />
+                    /> */}
+                    <select className="form-control" name="confirmEmail" value={form.confirmEmail}
+                        onChange={handleChange} onBlur={handleBlur}>
+                        <option value="SIM">SIM</option>
+                        <option value="NAO">NÃO</option>
+                    </select>
+
                   </Form.Group>
                 </div>
                 <div className="col-4">
@@ -386,13 +416,20 @@ function Usuarios() {
                     style={{ width: "120px" }}
                   >
                     <Form.Label>Usuário Aprov.</Form.Label>
-                    <Form.Control
+
+                    {/* <Form.Control
                       type="text"
                       name="aprovadouser"
                       value={form.aprovadoUser}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                    />
+                    /> */}
+                    <select className="form-control" name="aprovadoUser" value={form.aprovadoUser}
+                        onChange={handleChange} onBlur={handleBlur}>
+                        <option value="SIM">SIM</option>
+                        <option value="NAO">NÃO</option>
+                    </select>
+
                   </Form.Group>
                 </div>
                 <div className="col-4">
@@ -401,13 +438,20 @@ function Usuarios() {
                     style={{ width: "120px" }}
                   >
                     <Form.Label>Ativo</Form.Label>
-                    <Form.Control
+
+                    {/* <Form.Control
                       type="text"
                       name="active"
                       value={form.active}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                    />
+                    /> */}
+                    <select className="form-control" name="active" value={form.active}
+                        onChange={handleChange} onBlur={handleBlur}>
+                        <option value="SIM">SIM</option>
+                        <option value="NAO">NÃO</option>
+                    </select>
+
                   </Form.Group>
                 </div>
               </div>
@@ -495,63 +539,66 @@ function Usuarios() {
                   </div>
                 </th>
                 <th
-                  onClick={() => classifica("orgao", "text")}
-                  className=" text-center"
+                  // onClick={() => classifica("orgao", "number")}
+                  // className=" text-center"
                 >
                   <div className="d-flex">
                     <div className="col-11">Cod. Órgão</div>
-                    <div className="col-1">
+                    {/* <div className="col-1">
                       {" "}
                       <FontAwesomeIcon
                         style={{ color: "blue" }}
                         icon={faUpDown}
                       />{" "}
-                    </div>
+                    </div> */}
                   </div>
                 </th>
+
                 <th
-                  onClick={() => classifica("ConfirmEmail", "text")}
-                  className=" text-center"
+                  // onClick={() => classifica("ConfirmEmail", "text")}
+                  // className=" text-center"
                 >
                   <div className="d-flex">
                     <div className="col-11">E-mail Conf.</div>
-                    <div className="col-1">
+                    {/* <div className="col-1">
                       {" "}
                       <FontAwesomeIcon
                         style={{ color: "blue" }}
                         icon={faUpDown}
                       />{" "}
-                    </div>
+                    </div> */}
                   </div>
                 </th>
+
                 <th
-                  onClick={() => classifica("aprovadoUser", "text")}
-                  className=" text-center"
+                  // onClick={() => classifica("aprovadoUser", "text")}
+                  // className=" text-center"
                 >
                   <div className="d-flex">
                     <div className="col-11">Usuário Aprov.</div>
-                    <div className="col-1">
+                    {/* <div className="col-1">
                       {" "}
                       <FontAwesomeIcon
                         style={{ color: "blue" }}
                         icon={faUpDown}
                       />{" "}
-                    </div>
+                    </div> */}
                   </div>
                 </th>
+
                 <th
-                  onClick={() => classifica("active", "text")}
-                  className=" text-center"
+                  // onClick={() => classifica("active", "text")}
+                  // className=" text-center"
                 >
                   <div className="d-flex">
                     <div className="col-11">Usuário Ativo.</div>
-                    <div className="col-1">
+                    {/* <div className="col-1">
                       {" "}
                       <FontAwesomeIcon
                         style={{ color: "blue" }}
                         icon={faUpDown}
                       />{" "}
-                    </div>
+                    </div> */}
                   </div>
                 </th>
 
