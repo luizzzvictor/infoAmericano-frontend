@@ -14,7 +14,7 @@ function VitCaso() {
     <p> Utilize o formulário abaixo e informe com detalhes o que está prejudicando o cumprimento das medidas de seu caso.</p>
 
 
-// render Form para descrição do caso e lançamento da denúncia
+{/* // render Form para descrição do caso e lançamento da denúncia */}
 
 
     </Container>
