@@ -1,15 +1,11 @@
 import api from "../api/api.js";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { Button, Container, Form, Spinner, Table, Modal } from "react-bootstrap";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faPen, faTrash, faUpDown } from '@fortawesome/free-solid-svg-icons'
 
-import { AuthContext } from "../contexts/authContext";
-
 function Municipios() {
-
-  const { setLoggedInUser } = useContext(AuthContext);
 
   // Matriz de dados carregada da base de dados
   const [mMunicipios, setMunicipios] = useState([]);
@@ -236,11 +232,43 @@ function Municipios() {
                         </Form.Group>
                         <Form.Group className="mb-3 lh-1 fw-bold">
                             <Form.Label>UF: </Form.Label>
-                            <Form.Control type="text"
+
+                            <select className="form-control" name="UF" value={form.UF} 
+                                        onChange={handleChange} onBlur={handleBlur}>
+                                        <option value="AL">AL</option>
+                                        <option value="AM">AM</option>
+                                        <option value="AP">AP</option>
+                                        <option value="BA">BA</option>
+                                        <option value="CE">CE</option>
+                                        <option value="DF">DF</option>
+                                        <option value="ES">ES</option>
+                                        <option value="GO">GO</option>
+                                        <option value="MA">MA</option>
+                                        <option value="MG">MG</option>
+                                        <option value="MS">MS</option>
+                                        <option value="MT">MT</option>
+                                        <option value="PA">PA</option>
+                                        <option value="PB">PB</option>
+                                        <option value="PE">PE</option>
+                                        <option value="PI">PI</option>
+                                        <option value="PR">PR</option>
+                                        <option value="RJ">RJ</option>
+                                        <option value="RN">RN</option>
+                                        <option value="RO">RO</option>
+                                        <option value="RR">RR</option>
+                                        <option value="RS">RS</option>
+                                        <option value="SC">SC</option>
+                                        <option value="SE">SE</option>
+                                        <option value="SP">SP</option>
+                                        <option value="TO">TO</option>
+                                    </select>
+
+                            {/* <Form.Control type="text"
                                 placeholder="Insira a UF do Municipio"
                                 name="UF" value={form.UF} onChange={handleChange}
                                 onBlur={handleBlur}
-                            />
+                            /> */}
+
                         </Form.Group>
 
                         <div className="text-center">

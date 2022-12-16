@@ -1,15 +1,15 @@
 import api from "../api/api.js";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { Button, Container, Form, Spinner, Table, Modal } from "react-bootstrap";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faPen, faTrash, faUpDown } from '@fortawesome/free-solid-svg-icons'
 
-import { AuthContext } from "../contexts/authContext";
+//import { AuthContext } from "../contexts/authContext"; 
 
 function Assuntos() {
 
-  const { setLoggedInUser } = useContext(AuthContext);
+  //const { setLoggedInUser } = useContext(AuthContext);
 
   // Matriz de dados carregada da base de dados
   const [mAssuntos, setAssuntos] = useState([]);
