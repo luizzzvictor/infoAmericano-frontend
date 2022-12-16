@@ -29,7 +29,6 @@ function ProfilePage() {
     fetchUser();
   }, [reload]);
 
-  
   const [orgao, setOrgao] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -46,9 +45,8 @@ function ProfilePage() {
     fetchUserData();
   }, []);
 
-
-  const [infosPrestadas, setInfosPrestadas] = useState()
-  const [isLoading2, setIsLoading2] = useState(true)
+  const [infosPrestadas, setInfosPrestadas] = useState();
+  const [isLoading2, setIsLoading2] = useState(true);
 
   useEffect(() => {
     async function fetchInfosData() {
@@ -63,11 +61,9 @@ function ProfilePage() {
     fetchInfosData();
   }, []);
 
-
-
   async function handleDeleteUser() {
     try {
-      await api.delete("/user/delete");      
+      await api.delete("/user/delete");
     } catch (error) {
       console.log(error);
       alert("Algo deu errado no delete do user");
@@ -75,22 +71,22 @@ function ProfilePage() {
   }
 
   const renderRoleName = () => {
-    if(user.role === "admin") {
-        return "Administrador"
+    if (user.role === "admin") {
+      return "Administrador";
     }
-    if(user.role === "vitima") {
-        return "Vítima"
+    if (user.role === "vitima") {
+      return "Vítima";
     }
-    if(user.role === "prestador") {
-        return "Autoridade Prestadora de Informação"
+    if (user.role === "prestador") {
+      return "Autoridade Prestadora de Informação";
     }
-    if(user.role === "interessado") {
-        return "Interessado"
+    if (user.role === "interessado") {
+      return "Interessado";
     }
-    if(user.role === "representante") {
-        return "Representante"
-    }  
-  }
+    if (user.role === "representante") {
+      return "Representante";
+    }
+  };
 
   return (
     <div>
@@ -98,27 +94,49 @@ function ProfilePage() {
         <Row className="align-items-center mb-5">
           <Col>
             <Card>
-              <h4 style={{marginTop:"15px"}}>{user.name}</h4>
-              <p><strong>E-mail:</strong> {user.email}</p>
-              <p><strong>Tribunal:</strong> {orgao}</p>
-              <p><strong>Perfil:</strong> {renderRoleName()}</p>
+              <h4 style={{ marginTop: "15px" }}>{user.name}</h4>
+              <p>
+                <strong>E-mail:</strong> {user.email}
+              </p>
+              <p>
+                <strong>Tribunal:</strong> {orgao}
+              </p>
+              <p>
+                <strong>Perfil:</strong> {renderRoleName()}
+              </p>
             </Card>
           </Col>
           <Col>
-            <h5 > Você possui <strong style={{color: "green"}}> {isLoading2 && <Spinner className="mt-4" animation="border" />} {!isLoading2 && infosPrestadas.length} Informações</strong>  prestadas sobre Medidas de Reparação outorgadas pela Corte IDH.</h5>
+            <h5>
+              {" "}
+              Você possui{" "}
+              <strong style={{ color: "green" }}>
+                {" "}
+                {isLoading2 && (
+                  <Spinner className="mt-4" animation="border" />
+                )}{" "}
+                {!isLoading2 && infosPrestadas.length} Informações
+              </strong>{" "}
+              prestadas sobre Medidas de Reparação outorgadas pela Corte IDH.
+            </h5>
           </Col>
         </Row>
 
-        <Row>        
+        <Row>
           <Col>
             <Button variant="danger" onClick={handleDeleteUser}>
               Excluir perfil
             </Button>
-          </Col>         
-          <Col>
-            <Link to="/tasks">
-              <Button variant="dark" >Ver Informações</Button>
-            </Link>
+          </Col>
+          <Col>            
+              <Button
+                variant="dark"
+                onClick={() => {
+                  navigate(`/profile/infos`);
+                }}
+              >
+                Ver Informações
+              </Button>       
           </Col>
         </Row>
       </Container>

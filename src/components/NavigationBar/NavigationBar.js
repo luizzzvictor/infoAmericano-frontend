@@ -8,6 +8,7 @@ import {
   NavDropdown,
   OverlayTrigger,
   Popover,
+  Spinner,
 } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../../p2-style.module.css";
@@ -246,6 +247,9 @@ function NavigationBar() {
                 >
                   Logout
                 </Nav.Link>
+                {/* {isLoading && (
+                  <Spinner className="mt-4" animation="border" />
+                )} */}
 
                 {!isLoading && (
                   <OverlayTrigger
