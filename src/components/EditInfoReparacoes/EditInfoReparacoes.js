@@ -96,7 +96,7 @@ function EditInfoReparacoes({ id, setReparacao, infoIndex }) {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
+            {/* <Form.Group className="mb-3">
               <Form.Label>Tribunal</Form.Label>
               <Form.Control
                 type="text"
@@ -115,7 +115,7 @@ function EditInfoReparacoes({ id, setReparacao, infoIndex }) {
                 value={form.unidade_judiciaria}
                 onChange={handleChange}
               />
-            </Form.Group>
+            </Form.Group> */}
             <Form.Group className="mb-3">
               <Form.Label>
                 Informações Relevantes sobre o Cumprimento
@@ -126,6 +126,7 @@ function EditInfoReparacoes({ id, setReparacao, infoIndex }) {
                 name="infos_relevantes"
                 value={form.infos_relevantes}
                 onChange={handleChange}
+                style={{height: "200px"}}
               />
             </Form.Group>
             <Form.Group>
@@ -134,7 +135,7 @@ function EditInfoReparacoes({ id, setReparacao, infoIndex }) {
               </Form.Label>
               <Form.Select
                 name="notificar_estado_cumprimento"
-                onChange={handleChange}
+                onChange={handleChange}               
               >
                 <option value="0">Selecione uma opção</option>
                 <option value="Pendente de cumprimento">
