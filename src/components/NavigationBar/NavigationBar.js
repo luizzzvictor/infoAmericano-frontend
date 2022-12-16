@@ -228,6 +228,16 @@ function NavigationBar() {
                     </NavDropdown.Item>
                   </NavDropdown>
                 )}
+                {loggedInUser.user.role === "vitima" && (
+                  <Nav.Link
+                    className={styles.navbarBtn}
+                    onClick={() => {
+                      navigate(`/vitima`);
+                    }}
+                  >
+                    Vítimas/Representantes
+                  </Nav.Link>
+                )}
                 {loggedInUser.user.role !== "admin" && (
                   <Nav.Link
                     className={styles.navbarBtn}
