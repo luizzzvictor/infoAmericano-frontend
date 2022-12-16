@@ -8,6 +8,7 @@ import {
   NavDropdown,
   OverlayTrigger,
   Popover,
+  Spinner,
 } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../../p2-style.module.css";
@@ -238,17 +239,6 @@ function NavigationBar() {
                   </Nav.Link>
                 )}
 
-                {loggedInUser.user.role === "vitima" && (
-                  <Nav.Link
-                    className={styles.navbarBtn}
-                    onClick={() => {
-                      navigate(`/vitima`);
-                    }}
-                  >
-                    Respeito à Vítima
-                  </Nav.Link>
-                )}
-
                 <Nav.Link
                   className={styles.navbarBtn}
                   onClick={() => {
@@ -257,11 +247,14 @@ function NavigationBar() {
                 >
                   Logout
                 </Nav.Link>
+                {/* {isLoading && (
+                  <Spinner className="mt-4" animation="border" />
+                )} */}
 
                 {!isLoading && (
                   <OverlayTrigger
                     placement="bottom"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer" }}                    
                     overlay={
                       <Popover id="popover-basic">
                         <Popover.Header as="h3">
@@ -279,6 +272,9 @@ function NavigationBar() {
                         variant="light"
                         {...triggerHandler}
                         className="d-inline-flex align-items-center"
+                        onClick={() => {
+                    navigate(`/profile`);
+                  }}
                       >
                         <Image
                           ref={ref}
