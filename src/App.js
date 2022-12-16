@@ -33,6 +33,8 @@ import Assunto        from "./components/Assuntos";
 import Caso           from "./components/Casos";
 import VitCaso        from "./components/VitCaso";
 import Reparacao      from "./components/Reparacao";
+import ProfilePage from './pages/ProfilePage';
+import InfosPrestadas from './pages/InfosPrestadas';
 
 /*
 import InformacaoPage from "./pages/InformacaoPage";
@@ -65,6 +67,8 @@ function App() {
           <Route path="/reparacoes"     element={<ReparacoesList/>} />
           <Route path="/reparacoes/:id" element={<ReparacoesDetails/> } />
           <Route path='/sobre'          element={<Sobre/>} />
+          <Route path="/profile"       element={<ProfilePage/>} />
+          <Route path="/profile/infos"   element={<InfosPrestadas/>} />
 
           <Route path="*"              element={<ErrorPage />} />          
 
