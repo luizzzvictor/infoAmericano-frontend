@@ -4,15 +4,16 @@ import { toast } from "react-toastify";
 import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
 import EditInfoReparacoes from "../EditInfoReparacoes/EditInfoReparacoes";
 import AddInfoReparacoes from "../AddInfoReparacoes/AddInfoReparacoes";
+import RelatorioGerencial from "../RelatorioGerencial/relatoriogerencial";
 import api from "../../api/api";
 import * as moment from "moment/moment.js";
 import "moment/locale/pt-br";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/authContext";
 import generatePDF from "../../services/reportGenerator";
 import styles from "../../p2-style.module.css";
-
 
 function ReparacoesDetails() {
   const { loggedInUser } = useContext(AuthContext);
@@ -112,7 +113,10 @@ function ReparacoesDetails() {
           <Card className="text-center w-100">
             <Card.Header>
               <Card.Title className="m-0">
-                <h3 style={{fontSize: "1.2rem"}}> Informações dos Responsáveis sobre o Cumprimento</h3>
+                <h3 style={{ fontSize: "1.2rem" }}>
+                  {" "}
+                  Informações dos Responsáveis sobre o Cumprimento
+                </h3>
               </Card.Title>
             </Card.Header>
             <Container style={{ display: "flex", fontSize: "14px" }}>
@@ -200,14 +204,27 @@ function ReparacoesDetails() {
           </Col>
         </Row>
       </Container>
-      <Container style={{marginTop: "10px", display: "flex", justifyContent:"flex-end"}}>
-        <button
+      <Container
+        style={{
+          marginTop: "10px",
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        {/* <button
           className="btn btn-primary"
           onClick={() => generatePDF(reparacao)}
         >
           Gerar Relatório Gerencial
-        </button>      
-        
+        </button> */}
+        {!isLoading && (
+          <PDFDownloadLink
+            document={<RelatorioGerencial reparacao={reparacao} />}
+            fileName="relatorio"
+          >
+            {<button className="btn btn-primary">Gerar relatório gerencial</button>}
+          </PDFDownloadLink>
+        )}
       </Container>
       <Container
         style={{ fontFamily: "Playfair Display", marginBottom: "2rem" }}
@@ -216,14 +233,15 @@ function ReparacoesDetails() {
           <AddInfoReparacoes id={id} setReparacao={setReparacao} />
         )}
       </Container>
-      <Container style={{display: "flex"}} >
-      <Row>
-        <h4 className={styles.listaFull}>Histórico de Informações prestadas</h4>          
-      </Row>      
+      <Container style={{ display: "flex" }}>
+        <Row>
+          <h4 className={styles.listaFull}>
+            Histórico de Informações prestadas
+          </h4>
+        </Row>
       </Container>
       <Row>
-      <hr className={styles.divider}></hr>   
-
+        <hr className={styles.divider}></hr>
       </Row>
       <Container style={{ fontFamily: "Playfair Display" }}>
         {isLoading && <Spinner className="mt-4" animation="border" />}
