@@ -7,6 +7,10 @@ import AddInfoReparacoes from "../AddInfoReparacoes/AddInfoReparacoes";
 import api from "../../api/api";
 import * as moment from "moment/moment.js";
 import "moment/locale/pt-br";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import RelatorioGerencial from "../RelatorioGerencial/relatoriogerencial";
+
+
 
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/authContext";
@@ -201,13 +205,22 @@ function ReparacoesDetails() {
         </Row>
       </Container>
       <Container style={{marginTop: "10px", display: "flex", justifyContent:"flex-end"}}>
-        <button
-          className="btn btn-primary"
-          onClick={() => generatePDF(reparacao)}
-        >
-          Gerar Relatório Gerencial
-        </button>      
-        
+            
+        {!isLoading && (
+          <PDFDownloadLink
+            document={<RelatorioGerencial reparacao={reparacao} />}
+            fileName="relatorio"
+          >
+            {<button className="btn btn-primary">Gerar relatório gerencial</button>}
+          </PDFDownloadLink>
+        )}
+      </Container>
+      <Container
+        style={{ fontFamily: "Playfair Display", marginBottom: "2rem" }}
+      >
+        {loggedInUser && (
+          <AddInfoReparacoes id={id} setReparacao={setReparacao} />
+        )}
       </Container>
       <Container
         style={{ fontFamily: "Playfair Display", marginBottom: "2rem" }}
